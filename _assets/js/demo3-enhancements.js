@@ -32,7 +32,7 @@
     var weekdays = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
     var cells = [];
     for (var day = 1; day <= 30; day += 1) {
-      cells.push('<span class="' + (day === 28 ? 'wedding-day' : '') + '">' + day + '</span>');
+      cells.push('<span class="' + (day === 28 ? 'wedding-day' : '') + '" data-day="' + day + '" aria-label="' + day + '"></span>');
     }
     var element = document.createElement('div');
     element.className = 'demo3-calendar-transplant';
@@ -51,6 +51,20 @@
     return element;
   }
 
+  function refreshCalendarDates(root) {
+    var days = root && root.querySelectorAll('.demo3-calendar-grid > span');
+    if (!days || days.length !== 30) return;
+    Array.prototype.forEach.call(days, function (cell, index) {
+      var day = index + 1;
+      if (cell.textContent) cell.textContent = '';
+      if (cell.dataset.day !== String(day)) cell.dataset.day = String(day);
+      if (cell.getAttribute('aria-label') !== String(day)) cell.setAttribute('aria-label', String(day));
+      if (cell.classList.contains('wedding-day') !== (day === 28)) {
+        cell.classList.toggle('wedding-day', day === 28);
+      }
+    });
+  }
+
   function installCalendar() {
     if (!/\/save-the-date\/?$/.test(location.pathname)) return;
     ['LB7CNQHXl1FJF0PT', 'LBqp7QvHpHDNSdcb'].forEach(function (id) {
@@ -65,9 +79,12 @@
       var mirror = document.querySelector('img[src*="0005071ebe19c0c478c33ee6bea365a0.png"]');
       host = mirror && mirror.closest('.DF_utQ');
     }
-    if (!host || host.classList.contains('demo3-calendar-host')) return;
-    host.classList.add('demo3-calendar-host');
-    host.appendChild(buildCalendar());
+    if (!host) return;
+    if (!host.classList.contains('demo3-calendar-host')) {
+      host.classList.add('demo3-calendar-host');
+      host.appendChild(buildCalendar());
+    }
+    refreshCalendarDates(host);
   }
 
   function wireVinylControls(audio) {
@@ -243,6 +260,34 @@
     });
   }
 
+  function alignInvitationLabels() {
+    if (!/\/save-the-date\/?$/.test(location.pathname)) return;
+    var tag = document.getElementById('LB3ZbHR6Rs28Q8qW');
+    if (!tag) return;
+    var lines = tag.querySelectorAll('p');
+    if (lines.length < 3) return;
+    ['Lesly', '&', 'Gleen'].forEach(function (text, index) {
+      if (lines[index].textContent !== text) lines[index].textContent = text;
+    });
+  }
+
+  function guardInvitationComposition() {
+    if (window.demo3CompositionObserver || !window.MutationObserver) return;
+    var root = document.getElementById('root');
+    if (!root) return;
+    var pending = false;
+    window.demo3CompositionObserver = new MutationObserver(function () {
+      if (pending) return;
+      pending = true;
+      setTimeout(function () {
+        pending = false;
+        installCalendar();
+        alignInvitationLabels();
+      }, 40);
+    });
+    window.demo3CompositionObserver.observe(root, { childList: true, subtree: true, characterData: true });
+  }
+
   function updateCountdown() {
     var root = document.querySelector('.demo3-countdown-grid');
     if (!root) return;
@@ -268,9 +313,11 @@
     var music = createMusic();
     if (invitation) showWelcome(invitation, music);
     guardClosingSections();
+    guardInvitationComposition();
     installClosingSections();
     sanitizeDetailsLinks();
     installInitials();
+    alignInvitationLabels();
     updateCountdown();
     setInterval(updateCountdown, 1000);
     [350, 900, 1800, 3000, 6000].forEach(function (delay) {
@@ -279,6 +326,7 @@
       setTimeout(installClosingSections, delay);
       setTimeout(sanitizeDetailsLinks, delay);
       setTimeout(installInitials, delay);
+      setTimeout(alignInvitationLabels, delay);
     });
   }
 
