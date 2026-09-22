@@ -41,7 +41,7 @@
 :root {
   --demo3-ink: #5b5232;
   --demo3-muted: #8b8165;
-  --demo3-paper: #f4f0e9;
+  --demo3-paper: #eeece7;
   --demo3-paper-light: #faf8f3;
   --demo3-line: rgba(91, 82, 50, .28);
 }
@@ -248,12 +248,10 @@
   place-items: center;
   padding: clamp(28px, 5vw, 64px) clamp(20px, 6vw, 76px);
   text-align: center;
-  background:
-    radial-gradient(circle at 8% 7%, rgba(170, 160, 124, .16), transparent 28%),
-    linear-gradient(180deg, #f4f1eb, #ebe7df);
+  background: var(--demo3-paper);
 }
 
-.demo3-countdown { min-height: clamp(540px, 78vw, 940px); background: #e8e5dd; }
+.demo3-countdown { min-height: clamp(540px, 78vw, 940px); }
 .demo3-closing-inner { width: min(84%, 560px); }
 .demo3-social-logo {
   width: clamp(64px, 9vw, 112px);
@@ -342,7 +340,7 @@
   gap: clamp(10px, 1.5vw, 18px);
   padding: clamp(30px, 5vw, 62px) 24px;
   text-align: center;
-  background: #eeece7;
+  background: var(--demo3-paper);
 }
 .demo3-angels {
   display: block;
