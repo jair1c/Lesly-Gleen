@@ -39,13 +39,15 @@
     element.setAttribute('role', 'img');
     element.setAttribute('aria-label', 'Calendario de noviembre de 2026; boda el sábado 28 a las 3 de la tarde');
     element.innerHTML =
-      '<img class="demo3-calendar-paper" src="' + BASE + '_assets/media/a9df9c0ccfaca50aa0e135ca91290a33.png" alt="">' +
-      '<div class="demo3-calendar-title">Noviembre 2026</div>' +
-      '<div class="demo3-calendar-dates">' +
-        '<div class="demo3-calendar-week">' + weekdays.map(function (d) { return '<span>' + d + '</span>'; }).join('') + '</div>' +
-        '<div class="demo3-calendar-grid">' + cells.join('') + '</div>' +
-      '</div>' +
-      '<div class="demo3-calendar-foot">3:00 PM<br>LOS CANTARITOS · SULLANA</div>';
+      '<div class="demo3-calendar-card">' +
+        '<img class="demo3-calendar-paper" src="' + BASE + '_assets/media/a9df9c0ccfaca50aa0e135ca91290a33.png" alt="">' +
+        '<div class="demo3-calendar-title">Noviembre 2026</div>' +
+        '<div class="demo3-calendar-dates">' +
+          '<div class="demo3-calendar-week">' + weekdays.map(function (d) { return '<span>' + d + '</span>'; }).join('') + '</div>' +
+          '<div class="demo3-calendar-grid">' + cells.join('') + '</div>' +
+        '</div>' +
+        '<div class="demo3-calendar-foot">3:00 PM<br>LOS CANTARITOS · SULLANA</div>' +
+      '</div>';
     return element;
   }
 
@@ -68,34 +70,40 @@
     host.appendChild(buildCalendar());
   }
 
+  function wireVinylControls(audio) {
+    var vinyl = document.querySelector('video');
+    if (vinyl && !vinyl.dataset.demo3MusicBound) {
+      vinyl.dataset.demo3MusicBound = 'true';
+      vinyl.loop = true;
+      vinyl.addEventListener('play', function () { audio.play().catch(function () {}); });
+      vinyl.addEventListener('pause', function () { audio.pause(); });
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('button'), function (button) {
+      var label = normalize(button.getAttribute('aria-label') || button.innerText).toLowerCase();
+      if (button.dataset.demo3MusicBound || (label !== 'reproducir' && label !== 'pausar')) return;
+      button.dataset.demo3MusicBound = 'true';
+      button.addEventListener('click', function () {
+        if (label === 'pausar') audio.pause();
+        else audio.play().catch(function () {});
+      }, true);
+    });
+  }
+
   function createMusic() {
-    if (document.querySelector('.demo3-music')) return null;
+    var existing = document.querySelector('audio[data-demo3-music]');
+    if (existing) return { audio: existing };
     var audio = document.createElement('audio');
+    audio.dataset.demo3Music = 'true';
+    audio.dataset.state = 'paused';
     audio.src = BASE + '_assets/music/music.mp3';
     audio.loop = true;
     audio.preload = 'metadata';
-    var button = document.createElement('button');
-    button.className = 'demo3-music';
-    button.type = 'button';
-    button.setAttribute('aria-label', 'Reproducir música');
-    button.textContent = '♫';
-    button.addEventListener('click', function () {
-      if (audio.paused) {
-        audio.play().then(function () {
-          button.classList.add('is-playing');
-          button.setAttribute('aria-label', 'Pausar música');
-          button.textContent = 'Ⅱ';
-        }).catch(function () {});
-      } else {
-        audio.pause();
-        button.classList.remove('is-playing');
-        button.setAttribute('aria-label', 'Reproducir música');
-        button.textContent = '♫';
-      }
-    });
+    audio.addEventListener('play', function () { audio.dataset.state = 'playing'; });
+    audio.addEventListener('pause', function () { audio.dataset.state = 'paused'; });
+    audio.addEventListener('error', function () { audio.dataset.state = 'error'; });
     document.body.appendChild(audio);
-    document.body.appendChild(button);
-    return { audio: audio, button: button };
+    wireVinylControls(audio);
+    return { audio: audio };
   }
 
   function showWelcome(invitation, music) {
@@ -114,7 +122,6 @@
       '</article>';
     overlay.querySelector('button').addEventListener('click', function () {
       overlay.remove();
-      if (music) music.button.click();
     });
     document.body.appendChild(overlay);
   }
@@ -134,10 +141,20 @@
   }
 
   function installClosingSections() {
-    if (!location.pathname.endsWith(BASE) && location.pathname !== BASE.slice(0, -1)) return;
-    if (document.querySelector('.demo3-closing')) return;
-    var closing = document.createElement('main');
-    closing.className = 'demo3-closing';
+    if (!/\/save-the-date\/?$/.test(location.pathname)) return;
+    var page = document.getElementById('LBdV4l0jXPBtJ72l');
+    page = page && page.closest('._mXnjA');
+    var oldFooter = document.getElementById('LBqj2Vncc9rQH5Vk');
+    var oldAngels = document.getElementById('LBkNsdKGhKKhhHky');
+    var anchor = oldFooter || oldAngels;
+    if (!page || !anchor) return;
+    var canvas = page.closest('section.rGeu6w');
+    if (!canvas) return;
+    canvas.style.position = 'relative';
+    var closing = canvas.querySelector('.demo3-inpage-closing');
+    if (!closing) {
+      closing = document.createElement('div');
+      closing.className = 'demo3-inpage-closing';
     closing.innerHTML =
       '<section class="demo3-social">' +
         '<div class="demo3-closing-inner">' +
@@ -150,18 +167,61 @@
       '</section>' +
       '<section class="demo3-countdown">' +
         '<div class="demo3-closing-inner">' +
-          '<div class="demo3-kicker">Nos vemos en</div>' +
-          '<h2>La cuenta regresiva</h2>' +
+          '<h2>Nos vemos en:</h2>' +
           '<div class="demo3-countdown-grid" aria-live="polite">' +
             '<div class="demo3-countdown-item"><span class="demo3-countdown-value" data-unit="days">00</span><span class="demo3-countdown-label">Días</span></div>' +
             '<div class="demo3-countdown-item"><span class="demo3-countdown-value" data-unit="hours">00</span><span class="demo3-countdown-label">Horas</span></div>' +
-            '<div class="demo3-countdown-item"><span class="demo3-countdown-value" data-unit="minutes">00</span><span class="demo3-countdown-label">Minutos</span></div>' +
-            '<div class="demo3-countdown-item"><span class="demo3-countdown-value" data-unit="seconds">00</span><span class="demo3-countdown-label">Segundos</span></div>' +
+            '<div class="demo3-countdown-item"><span class="demo3-countdown-value" data-unit="seconds">0000</span><span class="demo3-countdown-label">Segundos</span></div>' +
           '</div>' +
+          '<figure class="demo3-countdown-polaroid">' +
+            '<img src="' + BASE + '_assets/media/f8cd8d3d222799fd4ecec8c56a48535d.png" alt="Lesly y Gleen">' +
+            '<figcaption>Lesly &amp; Gleen</figcaption>' +
+          '</figure>' +
           '<p class="demo3-date-line">28 de noviembre de 2026 · 3:00 PM<br>Club Campestre Los Cantaritos · Sullana</p>' +
         '</div>' +
+      '</section>' +
+      '<section class="demo3-farewell">' +
+        '<img class="demo3-angels" src="' + BASE + '_assets/media/ac55e3d49fc01691837c45349775e860.png" alt="Angelitos decorativos">' +
+        '<div class="demo3-kicker">Con cariño</div>' +
+        '<h2>Lesly &amp; Gleen</h2>' +
+        '<a class="demo3-back" href="' + BASE + '#page-1">Volver</a>' +
       '</section>';
-    document.body.appendChild(closing);
+      canvas.appendChild(closing);
+    }
+
+    var canvasRect = canvas.getBoundingClientRect();
+    var footerRect = anchor.getBoundingClientRect();
+    var fallbackGap = oldFooter ? 0 : 70 * (page.getBoundingClientRect().width / 1265);
+    var start = Math.max(0, footerRect.top - canvasRect.top - fallbackGap);
+    closing.style.top = start + 'px';
+    closing.style.left = '0px';
+    var newHeight = Math.ceil(start + closing.getBoundingClientRect().height);
+    var node = page;
+    while (node) {
+      node.style.height = newHeight + 'px';
+      if (node.matches && node.matches('section.rGeu6w')) {
+        if (node.parentElement) node.parentElement.style.height = newHeight + 'px';
+        break;
+      }
+      node = node.parentElement;
+    }
+    updateCountdown();
+  }
+
+  function guardClosingSections() {
+    if (window.demo3ClosingObserver || !window.MutationObserver) return;
+    var root = document.getElementById('root');
+    if (!root) return;
+    var pending = false;
+    window.demo3ClosingObserver = new MutationObserver(function () {
+      if (pending || document.querySelector('.demo3-inpage-closing')) return;
+      pending = true;
+      setTimeout(function () {
+        pending = false;
+        installClosingSections();
+      }, 50);
+    });
+    window.demo3ClosingObserver.observe(root, { childList: true, subtree: true });
   }
 
   function sanitizeDetailsLinks() {
@@ -190,12 +250,11 @@
     var values = {
       days: Math.floor(remaining / 86400000),
       hours: Math.floor(remaining / 3600000) % 24,
-      minutes: Math.floor(remaining / 60000) % 60,
-      seconds: Math.floor(remaining / 1000) % 60
+      seconds: Math.floor(remaining / 1000) % 3600
     };
     Object.keys(values).forEach(function (unit) {
       var node = root.querySelector('[data-unit="' + unit + '"]');
-      if (node) node.textContent = String(values[unit]).padStart(2, '0');
+      if (node) node.textContent = String(values[unit]).padStart(unit === 'seconds' ? 4 : 2, '0');
     });
   }
 
@@ -208,13 +267,16 @@
     }
     var music = createMusic();
     if (invitation) showWelcome(invitation, music);
+    guardClosingSections();
     installClosingSections();
     sanitizeDetailsLinks();
     installInitials();
     updateCountdown();
     setInterval(updateCountdown, 1000);
-    [350, 900, 1800, 3000].forEach(function (delay) {
+    [350, 900, 1800, 3000, 6000].forEach(function (delay) {
       setTimeout(installCalendar, delay);
+      setTimeout(function () { wireVinylControls(music.audio); }, delay);
+      setTimeout(installClosingSections, delay);
       setTimeout(sanitizeDetailsLinks, delay);
       setTimeout(installInitials, delay);
     });
