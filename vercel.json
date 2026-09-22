@@ -1,0 +1,22 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/", "destination": "/ivory-photo-booth-wedding-website", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/ivory-photo-booth-wedding-website", "destination": "/index.html" },
+    { "source": "/ivory-photo-booth-wedding-website/save-the-date", "destination": "/save-the-date.html" },
+    { "source": "/ivory-photo-booth-wedding-website/details", "destination": "/details.html" },
+    { "source": "/ivory-photo-booth-wedding-website/our-love-story", "destination": "/our-love-story.html" },
+    { "source": "/ivory-photo-booth-wedding-website/photobooth", "destination": "/photobooth.html" },
+    { "source": "/ivory-photo-booth-wedding-website/_website-element-widget", "destination": "/_website-element-widget.html" },
+    { "source": "/ivory-photo-booth-wedding-website/_assets/:path*", "destination": "/_assets/:path*" }
+  ],
+  "headers": [
+    {
+      "source": "/_assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Generador de invitaciones · Lesly &amp; Gleen</title>
+  <link rel="stylesheet" href="_assets/css/demo3-enhancements.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #5b5232; background: #e7e6df; font-family: "Demo3 Text", Georgia, serif; }
+    .admin-shell { width: min(100% - 28px, 620px); margin: 28px auto; padding: 30px clamp(20px, 6vw, 44px); background: #faf8f3; border: 1px solid rgba(91,82,50,.24); box-shadow: 0 14px 40px rgba(50,43,29,.12); }
+    .admin-logo { display:block; width:100px; height:100px; margin:0 auto 14px; border-radius:50%; object-fit:cover; }
+    h1 { margin:0; text-align:center; font:italic 400 clamp(36px,9vw,52px)/1 "Demo3 Serif",Georgia,serif; }
+    .lead { max-width:45ch; margin:12px auto 28px; text-align:center; line-height:1.55; }
+    label { display:block; margin:16px 0 6px; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+    input { width:100%; padding:12px 13px; color:#433c28; background:#f5f1e9; border:1px solid #cfc7b8; border-radius:2px; font:400 15px/1.2 "Demo3 Text",Arial,sans-serif; }
+    input:focus { outline:2px solid rgba(91,82,50,.25); border-color:#5b5232; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    button { width:100%; margin-top:22px; padding:13px 16px; color:#f8f5ee; background:#5b5232; border:0; cursor:pointer; font:700 11px/1 "Demo3 Text",Arial,sans-serif; letter-spacing:.15em; text-transform:uppercase; }
+    .result { display:none; margin-top:26px; padding-top:22px; border-top:1px solid rgba(91,82,50,.25); }
+    .result.is-visible { display:block; }
+    .result textarea { width:100%; min-height:112px; padding:12px; resize:vertical; border:1px solid #cfc7b8; background:#fff; font:12px/1.45 Consolas,monospace; }
+    .secondary { margin-top:10px; color:#5b5232; background:transparent; border:1px solid #5b5232; }
+    .note { margin-top:24px; padding:13px 14px; background:#efebe3; font-size:12px; line-height:1.5; }
+    @media(max-width:500px){.grid{grid-template-columns:1fr}.admin-shell{margin:14px auto;padding-top:24px}}
+  </style>
+</head>
+<body>
+  <main class="admin-shell">
+    <img class="admin-logo" src="_assets/branding/lg-monogram.png" alt="Monograma LG">
+    <div class="demo3-kicker" style="text-align:center">Panel privado</div>
+    <h1>Crear invitación</h1>
+    <p class="lead">Genera un enlace personalizado con los nombres y la cantidad exacta de cupos reservados.</p>
+    <form id="inviteForm">
+      <label for="names">Nombre del invitado o familia</label>
+      <input id="names" name="names" placeholder="Ej.: Familia Ramírez" required>
+      <div class="grid">
+        <div>
+          <label for="seats">Cupos reservados</label>
+          <input id="seats" name="seats" type="number" min="1" max="20" value="2" required>
+        </div>
+        <div>
+          <label for="expiry">Válido antes de</label>
+          <input id="expiry" name="expiry" type="date" value="2026-10-23" required>
+        </div>
+      </div>
+      <button type="submit">Generar enlace personalizado</button>
+    </form>
+    <section class="result" id="result">
+      <label for="generated">Enlace listo para enviar</label>
+      <textarea id="generated" readonly></textarea>
+      <button class="secondary" type="button" id="copy">Copiar enlace</button>
+      <button class="secondary" type="button" id="preview">Abrir vista previa</button>
+    </section>
+    <p class="note"><strong>Importante:</strong> esta página no aparece en el menú. Al ser un sitio estático, el enlace codifica los datos para personalizar la experiencia, pero no funciona como contraseña ni almacena una base de invitados.</p>
+  </main>
+  <script>
+    const form = document.getElementById('inviteForm');
+    const result = document.getElementById('result');
+    const generated = document.getElementById('generated');
+    function encodePayload(payload) {
+      const bytes = new TextEncoder().encode(JSON.stringify(payload));
+      let binary = '';
+      bytes.forEach(byte => { binary += String.fromCharCode(byte); });
+      return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+    function invitationBase() {
+      const localBase = '/ivory-photo-booth-wedding-website/';
+      return new URL(localBase, location.origin).href;
+    }
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const payload = {
+        names: document.getElementById('names').value.trim(),
+        seats: Number(document.getElementById('seats').value),
+        exp: document.getElementById('expiry').value
+      };
+      generated.value = invitationBase() + '?i=' + encodePayload(payload);
+      result.classList.add('is-visible');
+      generated.focus();
+      generated.select();
+    });
+    document.getElementById('copy').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(generated.value);
+      document.getElementById('copy').textContent = 'Enlace copiado';
+      setTimeout(() => { document.getElementById('copy').textContent = 'Copiar enlace'; }, 1800);
+    });
+    document.getElementById('preview').addEventListener('click', () => {
+      if (generated.value) window.open(generated.value, '_blank', 'noopener');
+    });
+  </script>
+</body>
+</html>

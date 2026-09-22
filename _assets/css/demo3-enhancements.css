@@ -1,0 +1,274 @@
+@font-face {
+  font-family: "Demo3 Serif";
+  src: url("../fonts/003e82bf2f68067801da6a72d24cdf78.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Demo3 Text";
+  src: url("../fonts/238919b47920553d7b287ec007d67e76.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --demo3-ink: #5b5232;
+  --demo3-muted: #8b8165;
+  --demo3-paper: #f4f0e9;
+  --demo3-paper-light: #faf8f3;
+  --demo3-line: rgba(91, 82, 50, .28);
+}
+
+.demo3-calendar-overlay {
+  position: absolute;
+  z-index: 2147480000;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  padding: 10px 13px 9px;
+  overflow: hidden;
+  color: var(--demo3-ink);
+  background: linear-gradient(145deg, rgba(250, 248, 243, .98), rgba(236, 231, 221, .98));
+  border: 1px solid rgba(120, 105, 75, .24);
+  box-shadow: 0 5px 16px rgba(55, 45, 28, .14);
+  text-align: center;
+  transform: rotate(-5.25deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.demo3-calendar-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(91, 82, 50, .12);
+}
+
+.demo3-calendar-title {
+  position: relative;
+  z-index: 1;
+  font-family: "Demo3 Serif", Georgia, serif;
+  font-size: clamp(18px, 3.2vw, 34px);
+  font-style: italic;
+  line-height: 1;
+}
+
+.demo3-calendar-week,
+.demo3-calendar-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: center;
+  font-family: "Demo3 Text", Arial, sans-serif;
+}
+
+.demo3-calendar-week {
+  color: var(--demo3-muted);
+  font-size: clamp(5px, .72vw, 9px);
+  letter-spacing: .08em;
+}
+
+.demo3-calendar-grid {
+  row-gap: 2px;
+  font-size: clamp(7px, 1vw, 12px);
+}
+
+.demo3-calendar-grid span {
+  display: grid;
+  place-items: center;
+  min-height: 15px;
+}
+
+.demo3-calendar-grid .empty { visibility: hidden; }
+.demo3-calendar-grid .wedding-day {
+  width: 1.75em;
+  height: 1.75em;
+  margin: auto;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.demo3-calendar-foot {
+  position: relative;
+  z-index: 1;
+  padding-top: 4px;
+  border-top: 1px solid var(--demo3-line);
+  font-family: "Demo3 Text", Arial, sans-serif;
+  font-size: clamp(5px, .75vw, 9px);
+  line-height: 1.3;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.demo3-welcome,
+.demo3-expired {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: rgba(229, 229, 220, .94);
+  backdrop-filter: blur(8px);
+}
+
+.demo3-welcome-card,
+.demo3-expired-card {
+  width: min(100%, 410px);
+  padding: 28px 24px 26px;
+  color: var(--demo3-ink);
+  background: var(--demo3-paper-light);
+  border: 1px solid rgba(91, 82, 50, .25);
+  box-shadow: 0 18px 55px rgba(45, 38, 24, .22);
+  text-align: center;
+}
+
+.demo3-welcome-logo,
+.demo3-social-logo,
+.demo3-expired-logo {
+  display: block;
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: .88;
+}
+
+.demo3-kicker {
+  margin: 0 0 10px;
+  font: 400 10px/1.4 "Demo3 Text", Arial, sans-serif;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.demo3-welcome h1,
+.demo3-expired h1 {
+  margin: 0 0 9px;
+  font: italic 400 clamp(37px, 11vw, 54px)/.98 "Demo3 Serif", Georgia, serif;
+}
+
+.demo3-welcome p,
+.demo3-expired p {
+  margin: 7px auto;
+  max-width: 30ch;
+  font: 400 15px/1.5 "Demo3 Text", Georgia, serif;
+}
+
+.demo3-enter {
+  margin-top: 18px;
+  padding: 12px 22px;
+  color: #f8f5ee;
+  background: var(--demo3-ink);
+  border: 0;
+  cursor: pointer;
+  font: 400 11px/1 "Demo3 Text", Arial, sans-serif;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.demo3-music {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483000;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 50%;
+  color: #f7f3eb;
+  background: rgba(75, 67, 43, .9);
+  box-shadow: 0 7px 20px rgba(40, 34, 20, .25);
+  cursor: pointer;
+  font-size: 19px;
+}
+
+.demo3-music.is-playing { animation: demo3-pulse 2.2s ease-in-out infinite; }
+
+.demo3-closing {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 768px);
+  margin: 0 auto;
+  color: var(--demo3-ink);
+  background: var(--demo3-paper);
+  overflow: hidden;
+}
+
+.demo3-social,
+.demo3-countdown {
+  min-height: 620px;
+  display: grid;
+  place-items: center;
+  padding: 62px 28px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 8% 7%, rgba(170, 160, 124, .16), transparent 28%),
+    linear-gradient(180deg, #f4f1eb, #ebe7df);
+}
+
+.demo3-countdown { min-height: 540px; background: #e8e5dd; }
+.demo3-closing-inner { width: min(100%, 540px); }
+.demo3-social-logo { width: 112px; height: 112px; margin-bottom: 22px; }
+.demo3-closing h2 {
+  margin: 0 0 16px;
+  font: italic 400 clamp(38px, 9vw, 60px)/1 "Demo3 Serif", Georgia, serif;
+}
+.demo3-closing-copy {
+  max-width: 35ch;
+  margin: 0 auto 28px;
+  font: 400 16px/1.65 "Demo3 Text", Georgia, serif;
+}
+.demo3-tags { display: grid; gap: 12px; }
+.demo3-tags span {
+  display: block;
+  padding: 13px 12px;
+  border: 1px solid rgba(91, 82, 50, .48);
+  background: rgba(255,255,255,.28);
+  font: 400 clamp(20px, 6vw, 30px)/1.1 "Demo3 Serif", Georgia, serif;
+}
+.demo3-countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 30px 0 24px;
+}
+.demo3-countdown-item {
+  padding: 15px 4px 12px;
+  border-top: 1px solid var(--demo3-line);
+  border-bottom: 1px solid var(--demo3-line);
+}
+.demo3-countdown-value {
+  display: block;
+  font: 400 clamp(31px, 9vw, 52px)/1 "Demo3 Serif", Georgia, serif;
+}
+.demo3-countdown-label {
+  display: block;
+  margin-top: 7px;
+  font: 400 8px/1 "Demo3 Text", Arial, sans-serif;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.demo3-date-line {
+  font: 400 11px/1.7 "Demo3 Text", Arial, sans-serif;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+@keyframes demo3-pulse { 50% { transform: scale(1.08); } }
+@media (prefers-reduced-motion: reduce) {
+  .demo3-music.is-playing { animation: none; }
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}
+
+@media (max-width: 480px) {
+  .demo3-calendar-overlay { padding: 6px 7px 5px; gap: 2px; }
+  .demo3-calendar-grid span { min-height: 10px; }
+  .demo3-social { min-height: 580px; padding-inline: 22px; }
+  .demo3-countdown { min-height: 500px; padding-inline: 18px; }
+}

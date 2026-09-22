@@ -1,0 +1,15 @@
+.vercel/
+node_modules/
+*.log
+*.before-reference
+confirmaciones_rsvp.json
+confirmaciones_rsvp.csv
+_assets/saved_resource*.html
+Save The Date_files/
+Details_files/
+Our Love Story_files/
+Photobooth_files/
+You Are Invited!_files/
+RSVP_files/
+Nuestra Historia de Amor_files/
+.visual-check/
