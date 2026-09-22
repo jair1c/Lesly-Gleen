@@ -30,48 +30,42 @@
 
   function buildCalendar() {
     var weekdays = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
-    var cells = ['<span class="empty">0</span>'];
+    var cells = [];
     for (var day = 1; day <= 30; day += 1) {
-      var visibleDay = day === 18 ? '1&#8203;8' : day;
-      cells.push('<span class="' + (day === 28 ? 'wedding-day' : '') + '">' + visibleDay + '</span>');
+      cells.push('<span class="' + (day === 28 ? 'wedding-day' : '') + '">' + day + '</span>');
     }
-    var element = document.createElement('section');
-    element.className = 'demo3-calendar-overlay';
-    element.setAttribute('aria-label', 'Calendario de noviembre de 2026; boda el día 28');
+    var element = document.createElement('div');
+    element.className = 'demo3-calendar-transplant';
+    element.setAttribute('role', 'img');
+    element.setAttribute('aria-label', 'Calendario de noviembre de 2026; boda el sábado 28 a las 3 de la tarde');
     element.innerHTML =
+      '<img class="demo3-calendar-paper" src="' + BASE + '_assets/media/a9df9c0ccfaca50aa0e135ca91290a33.png" alt="">' +
       '<div class="demo3-calendar-title">Noviembre 2026</div>' +
-      '<div class="demo3-calendar-week">' + weekdays.map(function (d) { return '<span>' + d + '</span>'; }).join('') + '</div>' +
-      '<div class="demo3-calendar-grid">' + cells.join('') + '</div>' +
-      '<div class="demo3-calendar-foot">28 de noviembre · 3:00 PM<br>Los Cantaritos · Sullana</div>';
+      '<div class="demo3-calendar-dates">' +
+        '<div class="demo3-calendar-week">' + weekdays.map(function (d) { return '<span>' + d + '</span>'; }).join('') + '</div>' +
+        '<div class="demo3-calendar-grid">' + cells.join('') + '</div>' +
+      '</div>' +
+      '<div class="demo3-calendar-foot">3:00 PM<br>LOS CANTARITOS · SULLANA</div>';
     return element;
   }
 
   function installCalendar() {
-    if (!/\/save-the-date\/?$/.test(location.pathname) || document.querySelector('.demo3-calendar-overlay')) return;
-    var wanted = ['18', '28', 'Junio', 'Noviembre', '4:30 PM EN', '3:00 PM', 'Solara Canyon Retreat', 'Club Campestre Los Cantaritos'];
-    var candidates = Array.prototype.filter.call(document.querySelectorAll('p'), function (element) {
-      return wanted.indexOf(normalize(element.innerText)) >= 0;
+    if (!/\/save-the-date\/?$/.test(location.pathname)) return;
+    ['LB7CNQHXl1FJF0PT', 'LBqp7QvHpHDNSdcb'].forEach(function (id) {
+      var originalText = document.getElementById(id);
+      if (originalText) {
+        originalText.style.opacity = '0';
+        originalText.setAttribute('aria-hidden', 'true');
+      }
     });
-    var date = candidates.find(function (el) { return ['Junio', 'Noviembre'].indexOf(normalize(el.innerText)) >= 0; });
-    if (!date) return;
-    var block = date.closest('.DF_utQ') || date.parentElement;
-    var rect = block.getBoundingClientRect();
-    var related = candidates.filter(function (element) {
-      var r = element.getBoundingClientRect();
-      return Math.abs((r.left + r.width / 2) - (rect.left + rect.width / 2)) < Math.max(120, rect.width);
-    });
-    var rects = related.map(function (element) { return element.getBoundingClientRect(); });
-    var left = Math.min.apply(Math, rects.map(function (r) { return r.left; }));
-    var top = Math.min.apply(Math, rects.map(function (r) { return r.top; }));
-    var right = Math.max.apply(Math, rects.map(function (r) { return r.right; }));
-    var bottom = Math.max.apply(Math, rects.map(function (r) { return r.bottom; }));
-    related.forEach(function (element) { element.style.opacity = '0'; });
-    var calendar = buildCalendar();
-    document.body.appendChild(calendar);
-    calendar.style.left = (left + window.scrollX - 5) + 'px';
-    calendar.style.top = (top + window.scrollY - 7) + 'px';
-    calendar.style.width = Math.max(120, right - left + 10) + 'px';
-    calendar.style.height = Math.max(170, bottom - top + 16) + 'px';
+    var host = document.getElementById('LB0s12mPKlql8H1Y');
+    if (!host) {
+      var mirror = document.querySelector('img[src*="0005071ebe19c0c478c33ee6bea365a0.png"]');
+      host = mirror && mirror.closest('.DF_utQ');
+    }
+    if (!host || host.classList.contains('demo3-calendar-host')) return;
+    host.classList.add('demo3-calendar-host');
+    host.appendChild(buildCalendar());
   }
 
   function createMusic() {

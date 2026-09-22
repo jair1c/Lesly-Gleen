@@ -14,6 +14,30 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Demo2 Calendar Script";
+  src: url("../fonts/003e82bf2f68067801da6a72d24cdf78.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Demo2 Calendar Numbers";
+  src: url("../fonts/8f112401d11bdde7dcb6ccc50d0cf469.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Demo2 Calendar Text";
+  src: url("../fonts/cfcbcaabc41291782c1541b9c6e97ce8.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --demo3-ink: #5b5232;
   --demo3-muted: #8b8165;
@@ -22,86 +46,103 @@
   --demo3-line: rgba(91, 82, 50, .28);
 }
 
-.demo3-calendar-overlay {
+.demo3-calendar-host { overflow: visible !important; }
+.demo3-calendar-host > :not(.demo3-calendar-transplant) {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+#LB7CNQHXl1FJF0PT,
+#LBqp7QvHpHDNSdcb {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.demo3-calendar-transplant {
   position: absolute;
-  z-index: 2147480000;
-  display: grid;
-  align-content: center;
-  gap: 5px;
-  padding: 10px 13px 9px;
+  inset: 0;
+  z-index: 2;
   overflow: hidden;
-  color: var(--demo3-ink);
-  background: linear-gradient(145deg, rgba(250, 248, 243, .98), rgba(236, 231, 221, .98));
-  border: 1px solid rgba(120, 105, 75, .24);
-  box-shadow: 0 5px 16px rgba(55, 45, 28, .14);
+  color: #67212d;
   text-align: center;
-  transform: rotate(-5.25deg);
-  transform-origin: center;
   pointer-events: none;
 }
 
-.demo3-calendar-overlay::after {
-  content: "";
+.demo3-calendar-paper {
   position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(91, 82, 50, .12);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
 }
 
 .demo3-calendar-title {
-  position: relative;
-  z-index: 1;
-  font-family: "Demo3 Serif", Georgia, serif;
-  font-size: clamp(18px, 3.2vw, 34px);
-  font-style: italic;
+  position: absolute;
+  z-index: 2;
+  top: 5.5%;
+  left: 9%;
+  width: 76%;
+  font-family: "Demo2 Calendar Script", "Demo3 Serif", cursive;
+  font-size: clamp(17px, 6.2vw, 27px);
   line-height: 1;
+  white-space: nowrap;
+}
+
+.demo3-calendar-dates {
+  position: absolute;
+  z-index: 2;
+  top: 22%;
+  left: 16.5%;
+  width: 65%;
 }
 
 .demo3-calendar-week,
 .demo3-calendar-grid {
-  position: relative;
-  z-index: 1;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   align-items: center;
-  font-family: "Demo3 Text", Arial, sans-serif;
+  font-family: "Demo2 Calendar Numbers", "Demo3 Text", sans-serif;
 }
 
 .demo3-calendar-week {
-  color: var(--demo3-muted);
-  font-size: clamp(5px, .72vw, 9px);
-  letter-spacing: .08em;
+  margin-bottom: 4px;
+  color: #a29282;
+  font-size: clamp(4px, 1.25vw, 7px);
+  letter-spacing: .02em;
 }
 
 .demo3-calendar-grid {
-  row-gap: 2px;
-  font-size: clamp(7px, 1vw, 12px);
+  row-gap: 4px;
+  color: #a29282;
+  font-size: clamp(6px, 1.75vw, 10px);
 }
 
 .demo3-calendar-grid span {
   display: grid;
   place-items: center;
-  min-height: 15px;
+  min-height: 1.65em;
 }
 
-.demo3-calendar-grid .empty { visibility: hidden; }
 .demo3-calendar-grid .wedding-day {
-  width: 1.75em;
-  height: 1.75em;
+  width: 2.25em;
+  height: 2.25em;
   margin: auto;
-  border: 1.5px solid currentColor;
+  color: #67212d;
+  border: 2px solid currentColor;
   border-radius: 50%;
   font-weight: 700;
 }
 
 .demo3-calendar-foot {
-  position: relative;
-  z-index: 1;
-  padding-top: 4px;
-  border-top: 1px solid var(--demo3-line);
-  font-family: "Demo3 Text", Arial, sans-serif;
-  font-size: clamp(5px, .75vw, 9px);
-  line-height: 1.3;
-  letter-spacing: .09em;
+  position: absolute;
+  z-index: 2;
+  top: 61%;
+  left: 16.5%;
+  width: 65%;
+  font-family: "Demo2 Calendar Text", "Demo3 Text", serif;
+  font-size: clamp(5px, 1.55vw, 9px);
+  line-height: 1.25;
+  letter-spacing: .035em;
   text-transform: uppercase;
 }
 
@@ -267,8 +308,6 @@
 }
 
 @media (max-width: 480px) {
-  .demo3-calendar-overlay { padding: 6px 7px 5px; gap: 2px; }
-  .demo3-calendar-grid span { min-height: 10px; }
   .demo3-social { min-height: 580px; padding-inline: 22px; }
   .demo3-countdown { min-height: 500px; padding-inline: 18px; }
 }
