@@ -110,6 +110,7 @@ const server = http.createServer((req, res) => {
     [`${canonicalBase}/details`]: '/Details.html',
     [`${canonicalBase}/our-love-story`]: '/Our Love Story.html',
     [`${canonicalBase}/photobooth`]: '/Photobooth.html',
+    [`${canonicalBase}/page-5`]: '/index.html',
   };
   const legacyRedirects = {
     '/Home.html': `${canonicalBase}/`,
@@ -124,6 +125,7 @@ const server = http.createServer((req, res) => {
     '/story': `${canonicalBase}/our-love-story`,
     '/our-love-story': `${canonicalBase}/our-love-story`,
     '/photobooth': `${canonicalBase}/photobooth`,
+    '/RSVP': `${canonicalBase}/page-5`,
     '/rsvp': `${canonicalBase}/#page-5`,
   };
   if (legacyRedirects[decoded]) {

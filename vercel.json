@@ -1,16 +1,23 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/", "destination": "/ivory-photo-booth-wedding-website", "permanent": false }
+    { "source": "/index", "destination": "/", "permanent": false },
+    { "source": "/Home", "destination": "/", "permanent": false }
   ],
   "rewrites": [
-    { "source": "/ivory-photo-booth-wedding-website", "destination": "/index.html" },
-    { "source": "/ivory-photo-booth-wedding-website/save-the-date", "destination": "/save-the-date.html" },
-    { "source": "/ivory-photo-booth-wedding-website/details", "destination": "/details.html" },
-    { "source": "/ivory-photo-booth-wedding-website/our-love-story", "destination": "/our-love-story.html" },
-    { "source": "/ivory-photo-booth-wedding-website/photobooth", "destination": "/photobooth.html" },
-    { "source": "/ivory-photo-booth-wedding-website/_website-element-widget", "destination": "/_website-element-widget.html" },
+    { "source": "/ivory-photo-booth-wedding-website", "destination": "/" },
+    { "source": "/ivory-photo-booth-wedding-website/save-the-date", "destination": "/save-the-date" },
+    { "source": "/ivory-photo-booth-wedding-website/details", "destination": "/Details" },
+    { "source": "/ivory-photo-booth-wedding-website/our-love-story", "destination": "/our-love-story" },
+    { "source": "/ivory-photo-booth-wedding-website/photobooth", "destination": "/Photobooth" },
+    { "source": "/ivory-photo-booth-wedding-website/page-5", "destination": "/" },
+    { "source": "/ivory-photo-booth-wedding-website/admin", "destination": "/admin" },
+    { "source": "/ivory-photo-booth-wedding-website/_website-element-widget", "destination": "/_website-element-widget" },
     { "source": "/ivory-photo-booth-wedding-website/_assets/:path*", "destination": "/_assets/:path*" }
   ],
   "headers": [
