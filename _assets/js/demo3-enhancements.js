@@ -23,8 +23,21 @@
     }
   }
 
+  function invitationToken() {
+    var token = new URLSearchParams(location.search).get('invite') || '';
+    try {
+      if (token) sessionStorage.setItem('demo3InviteToken', token);
+      else if (/\/ivory-photo-booth-wedding-website\/?$/i.test(location.pathname) && !location.hash) {
+        sessionStorage.removeItem('demo3InviteToken');
+      }
+      else token = sessionStorage.getItem('demo3InviteToken') || '';
+    } catch (error) {}
+    window.demo3InviteToken = token;
+    return token;
+  }
+
   async function loadInvitation() {
-    var databaseToken = new URLSearchParams(location.search).get('invite');
+    var databaseToken = invitationToken();
     if (!databaseToken) return decodeInvitation();
     try {
       var response = await fetch('/api/invitation?token=' + encodeURIComponent(databaseToken), {
@@ -39,6 +52,42 @@
       showInvitationError(error.message);
       return null;
     }
+  }
+
+  function preserveInvitationLinks() {
+    var token = invitationToken();
+    if (!token) return;
+    Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function (link) {
+      try {
+        var url = new URL(link.href, location.href);
+        if (url.origin !== location.origin || url.pathname.indexOf('/ivory-photo-booth-wedding-website') !== 0) return;
+        if (url.searchParams.get('invite') === token) return;
+        url.searchParams.set('invite', token);
+        link.href = url.pathname + url.search + url.hash;
+      } catch (error) {}
+    });
+  }
+
+  function installRealCouplePhotos() {
+    var path = location.pathname.toLowerCase();
+    var config = null;
+    if (/\/our-love-story\/?$/.test(path)) {
+      config = { id: 'LBgPWH2tPslHStvc', file: 'gleen-lesly-historia.jpg', name: 'historia' };
+    } else if (/\/details\/?$/.test(path)) {
+      config = { id: 'LBvYknkffVQpsrcy', file: 'gleen-lesly-detalles.jpg', name: 'detalles' };
+    } else if (/\/(?:page-5|rsvp)\/?$/.test(path) || location.hash === '#page-5') {
+      config = { id: 'LBv3mr8m03yXHG35', file: 'gleen-lesly-confirmacion.jpg', name: 'confirmacion' };
+    }
+    if (!config) return;
+    var host = document.getElementById(config.id);
+    var photo = host && host.querySelector('img');
+    if (!photo) return;
+    var source = BASE + '_assets/media/' + config.file;
+    if (photo.getAttribute('src') !== source) photo.setAttribute('src', source);
+    photo.removeAttribute('srcset');
+    photo.alt = 'Gleen y Lesly';
+    photo.classList.add('demo3-real-photo-image');
+    host.classList.add('demo3-real-photo', 'demo3-real-photo--' + config.name);
   }
 
   function showInvitationError(message) {
@@ -443,6 +492,8 @@
         alignInvitationLabels();
         alignDetailsContent();
         installInvitationDeadline(invitation);
+        preserveInvitationLinks();
+        installRealCouplePhotos();
         wireVinylControls(audio);
       }, 40);
     });
@@ -483,6 +534,8 @@
     installInitials();
     alignInvitationLabels();
     installInvitationDeadline(invitation);
+    preserveInvitationLinks();
+    installRealCouplePhotos();
     updateCountdown();
     setInterval(updateCountdown, 1000);
     [350, 900, 1800, 3000, 6000].forEach(function (delay) {
@@ -494,6 +547,8 @@
       setTimeout(installInitials, delay);
       setTimeout(alignInvitationLabels, delay);
       setTimeout(function () { installInvitationDeadline(invitation); }, delay);
+      setTimeout(preserveInvitationLinks, delay);
+      setTimeout(installRealCouplePhotos, delay);
     });
   }
 
