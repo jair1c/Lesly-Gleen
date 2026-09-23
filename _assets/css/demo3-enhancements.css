@@ -52,6 +52,12 @@
   pointer-events: none !important;
 }
 
+/* El control vive dentro del propio vinilo. Elevamos el conjunto completo
+   sobre el control de vídeo que Canva dibuja como una capa separada. */
+#LBfmmjqdw01g8QSC {
+  z-index: 2147482999 !important;
+}
+
 #LB7CNQHXl1FJF0PT,
 #LBqp7QvHpHDNSdcb,
 #LBqj2Vncc9rQH5Vk,
@@ -168,23 +174,43 @@
 }
 
 .demo3-vinyl-toggle {
-  position: fixed;
-  z-index: 2147483000;
-  top: 0;
-  left: 0;
+  position: absolute;
+  z-index: 2147483000 !important;
+  top: 50%;
+  left: 50%;
   display: grid;
-  width: clamp(36px, 4.3vw, 54px);
-  height: clamp(36px, 4.3vw, 54px);
+  width: 42%;
+  height: 42%;
   padding: 0;
   place-items: center;
-  transform: none;
+  transform: translate(-50%, -50%);
   color: #f5f1e7;
   background: rgba(88, 80, 61, .84);
-  border: clamp(2px, .23vw, 3px) solid rgba(245, 241, 231, .9);
+  border: 3px solid rgba(245, 241, 231, .9);
   border-radius: 50%;
   box-shadow: 0 3px 10px rgba(45, 38, 24, .22);
-  font: 700 clamp(18px, 1.9vw, 24px)/1 Arial, sans-serif;
+  font-size: 0;
   cursor: pointer;
+}
+
+.demo3-vinyl-toggle::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  margin-left: 8%;
+  border-top: .28em solid transparent;
+  border-bottom: .28em solid transparent;
+  border-left: .43em solid currentColor;
+  font-size: 42px;
+}
+
+.demo3-vinyl-toggle[data-state="playing"]::before {
+  width: 34%;
+  height: 46%;
+  margin-left: 0;
+  border: 0;
+  background: linear-gradient(to right, currentColor 0 31%, transparent 31% 69%, currentColor 69% 100%);
 }
 
 .demo3-vinyl-toggle:focus-visible {
@@ -441,6 +467,10 @@
 }
 
 @media (max-width: 480px) {
+  .demo3-calendar-host {
+    translate: 0 -10px !important;
+  }
+
   #LBc0yrsJdc0DfDnt > .aF9o6Q {
     margin-left: -15px;
   }

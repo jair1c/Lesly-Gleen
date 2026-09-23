@@ -53,6 +53,25 @@
     return Date.now() >= new Date(expiry + 'T00:00:00-05:00').getTime();
   }
 
+  function formatSpanishDate(value) {
+    var parts = String(value || DEFAULT_EXPIRY).split('-').map(Number);
+    if (parts.length !== 3 || parts.some(function (part) { return !part; })) return '';
+    var months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    return parts[2] + ' de ' + months[parts[1] - 1] + ' de ' + parts[0];
+  }
+
+  function installInvitationDeadline(invitation) {
+    if (!/\/(?:page-5|rsvp)\/?$/i.test(location.pathname) && location.hash !== '#page-5') return;
+    var formatted = formatSpanishDate(invitation && invitation.exp);
+    if (!formatted) return;
+    Array.prototype.forEach.call(document.querySelectorAll('p, h3'), function (node) {
+      var value = normalize(node.innerText).toLowerCase();
+      if (!/(?:18 de marzo|22 de octubre|23 de octubre|march 18)/i.test(value)) return;
+      if (normalize(node.textContent) !== formatted) node.textContent = formatted;
+      node.dataset.demo3Deadline = 'true';
+    });
+  }
+
   function buildCalendar() {
     var weekdays = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
     var cells = [];
@@ -113,6 +132,11 @@
   }
 
   function wireVinylControls(audio) {
+    if (!/\/save-the-date\/?$/i.test(location.pathname)) {
+      var strayToggle = document.querySelector('.demo3-vinyl-toggle');
+      if (strayToggle) strayToggle.remove();
+      return;
+    }
     var disc = document.getElementById('LBfmmjqdw01g8QSC');
     var toggle = document.querySelector('.demo3-vinyl-toggle');
     if (disc && !toggle) {
@@ -120,35 +144,9 @@
       toggle.type = 'button';
       toggle.className = 'demo3-vinyl-toggle';
       toggle.dataset.demo3MusicBound = 'true';
-      document.body.appendChild(toggle);
-    } else if (toggle && toggle.parentElement !== document.body) {
-      document.body.appendChild(toggle);
-    }
-
-    function positionToggle() {
-      var currentDisc = document.getElementById('LBfmmjqdw01g8QSC');
-      var currentToggle = document.querySelector('.demo3-vinyl-toggle');
-      if (!currentDisc || !currentToggle) return;
-      var rect = currentDisc.getBoundingClientRect();
-      currentToggle.style.left = (rect.left + (rect.width - currentToggle.offsetWidth) / 2) + 'px';
-      currentToggle.style.top = (rect.top + (rect.height - currentToggle.offsetHeight) / 2) + 'px';
-    }
-
-    positionToggle();
-    if (!window.demo3VinylPositionBound) {
-      window.demo3VinylPositionBound = true;
-      var positionFrame = 0;
-      function scheduleTogglePosition() {
-        if (positionFrame) return;
-        positionFrame = window.requestAnimationFrame(function () {
-          positionFrame = 0;
-          positionToggle();
-        });
-      }
-      window.addEventListener('scroll', scheduleTogglePosition, true);
-      window.addEventListener('resize', scheduleTogglePosition);
-      window.addEventListener('orientationchange', scheduleTogglePosition);
-      document.addEventListener('touchmove', scheduleTogglePosition, { passive: true });
+      disc.appendChild(toggle);
+    } else if (disc && toggle && toggle.parentElement !== disc) {
+      disc.appendChild(toggle);
     }
 
     if (!window.demo3MusicToggleBound) {
@@ -166,7 +164,8 @@
     function syncToggle() {
       var current = document.querySelector('.demo3-vinyl-toggle');
       if (!current) return;
-      current.textContent = audio.paused ? '\u25b6' : '\u2161';
+      current.textContent = '';
+      current.dataset.state = audio.paused ? 'paused' : 'playing';
       current.setAttribute('aria-label', audio.paused ? 'Reproducir música' : 'Pausar música');
       current.setAttribute('title', audio.paused ? 'Reproducir música' : 'Pausar música');
     }
@@ -420,7 +419,7 @@
     }
   }
 
-  function guardInvitationComposition(audio) {
+  function guardInvitationComposition(audio, invitation) {
     if (window.demo3CompositionObserver || !window.MutationObserver) return;
     var root = document.getElementById('root');
     if (!root) return;
@@ -433,6 +432,7 @@
         installCalendar();
         installInitials();
         alignInvitationLabels();
+        installInvitationDeadline(invitation);
         wireVinylControls(audio);
       }, 40);
     });
@@ -466,11 +466,12 @@
     enableMusicAutoplay(music.audio);
     if (invitation) showWelcome(invitation, music);
     guardClosingSections();
-    guardInvitationComposition(music.audio);
+    guardInvitationComposition(music.audio, invitation);
     installClosingSections();
     sanitizeDetailsLinks();
     installInitials();
     alignInvitationLabels();
+    installInvitationDeadline(invitation);
     updateCountdown();
     setInterval(updateCountdown, 1000);
     [350, 900, 1800, 3000, 6000].forEach(function (delay) {
@@ -480,6 +481,7 @@
       setTimeout(sanitizeDetailsLinks, delay);
       setTimeout(installInitials, delay);
       setTimeout(alignInvitationLabels, delay);
+      setTimeout(function () { installInvitationDeadline(invitation); }, delay);
     });
   }
 
