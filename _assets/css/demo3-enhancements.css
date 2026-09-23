@@ -375,6 +375,21 @@
   font: 400 clamp(16px, 2.2vw, 24px)/1.2 "Demo3 Text", Arial, sans-serif;
   letter-spacing: .035em;
 }
+.demo3-album-pending {
+  display: grid;
+  gap: 4px;
+  margin-top: 15px;
+  padding: 12px 14px;
+  color: var(--demo3-ink);
+  background: rgba(255,255,255,.22);
+  border: 1px dashed rgba(91, 82, 50, .38);
+  font: 400 11px/1.4 "Demo3 Text", Arial, sans-serif;
+}
+.demo3-album-pending strong {
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
 .demo3-countdown-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -493,6 +508,54 @@
 .demo3-real-photo--confirmacion .demo3-real-photo-image {
   object-position: 50% 40% !important;
   filter: brightness(.7) saturate(.82) sepia(.06);
+}
+
+/* Rosa empolvado elegido para armonizar con el marfil y el dorado del diseño. */
+.demo3-celebration-panel {
+  background-color: #b79592 !important;
+}
+
+.demo3-map-action a {
+  display: inline-block;
+  min-width: 180px;
+  padding: 11px 18px;
+  color: #5b5232 !important;
+  background: #f7f1e1;
+  border: 1px solid rgba(91, 82, 50, .34);
+  border-radius: 999px;
+  font: 700 10px/1 "Demo3 Text", Arial, sans-serif !important;
+  letter-spacing: .13em;
+  text-align: center;
+  text-decoration: none !important;
+  text-transform: uppercase;
+}
+
+.demo3-gift-note {
+  width: 100% !important;
+  max-width: 34ch !important;
+  margin-inline: auto !important;
+  text-align: center !important;
+}
+
+.demo3-rsvp-monogram img {
+  display: block;
+  width: clamp(90px, 13vw, 150px);
+  height: clamp(90px, 13vw, 150px);
+  margin: 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: brightness(1.08);
+  scale: 1.35 1;
+}
+
+.demo3-rsvp-date {
+  font-size: clamp(17px, 2vw, 28px) !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase;
+}
+
+.demo3-rsvp-repeated-venue {
+  visibility: hidden !important;
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; }

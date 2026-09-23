@@ -363,6 +363,7 @@
           '<h2>Etiqueta a los novios</h2>' +
           '<p class="demo3-closing-copy">Durante nuestra boda comparte tus fotografías y videos con nosotros en redes sociales.</p>' +
           '<div class="demo3-tags"><span>#GleenyLes</span><span>#GlenslyLand</span></div>' +
+          '<div class="demo3-album-pending"><strong>Álbum de fotos</strong><span>Pronto habilitaremos aquí el enlace para subir tus recuerdos.</span></div>' +
         '</div>' +
       '</section>' +
       '<section class="demo3-countdown">' +
@@ -444,6 +445,51 @@
     });
   }
 
+  function recolorCelebrationPanel() {
+    if (!/\/details\/?$/i.test(location.pathname)) return;
+    Array.prototype.forEach.call(document.querySelectorAll('div, section'), function (node) {
+      var color = getComputedStyle(node).backgroundColor.replace(/\s+/g, '');
+      var rect = node.getBoundingClientRect();
+      if (color === 'rgb(158,164,125)' && rect.width >= Math.min(320, innerWidth * .75) && rect.height > 220) {
+        node.classList.add('demo3-celebration-panel');
+      }
+    });
+  }
+
+  function applyBrideAudioNotes() {
+    var path = location.pathname.toLowerCase();
+    if (/\/details\/?$/.test(path)) {
+      Array.prototype.forEach.call(document.querySelectorAll('p'), function (paragraph) {
+        var value = normalize(paragraph.innerText);
+        if (/^Recomendamos coordinar el transporte con anticipación para asegurar/i.test(value)) {
+          paragraph.classList.add('demo3-map-action');
+          paragraph.innerHTML = '<a href="https://www.google.com/maps/search/?api=1&amp;query=Club+Campestre+Los+Cantaritos+Cola+del+Alacran+Sullana" target="_blank" rel="noopener">Ver ubicación en el mapa</a>';
+        }
+        if (/^Su presencia es nuestro mejor regalo/i.test(value)) {
+          paragraph.classList.add('demo3-gift-note');
+          paragraph.textContent = 'Su presencia es muy importante para nosotros. Si desean apoyarnos en este nuevo comienzo y en nuestro futuro juntos, pronto compartiremos aquí nuestras opciones de regalo.';
+        }
+      });
+    }
+
+    if (/\/(?:page-5|rsvp)\/?$/.test(path) || location.hash === '#page-5') {
+      Array.prototype.forEach.call(document.querySelectorAll('p, h1, h2, h3'), function (node) {
+        var value = normalize(node.innerText).toUpperCase();
+        if (value === '¡NOS ENCANTARÍA CELEBRAR CONTIGO!') {
+          node.classList.add('demo3-rsvp-monogram');
+          node.innerHTML = '<img src="' + BASE + '_assets/branding/lg-monogram.png" alt="Monograma de Gleen y Lesly">';
+        }
+        if (value === '28 NOV, 2026') {
+          node.textContent = '28 de noviembre de 2026';
+          node.classList.add('demo3-rsvp-date');
+        }
+        if (value === 'CLUB CAMPESTRE “LOS CANTARITOS”' || value === 'CLUB CAMPESTRE "LOS CANTARITOS"') {
+          node.classList.add('demo3-rsvp-repeated-venue');
+        }
+      });
+    }
+  }
+
   function installInitials() {
     Array.prototype.forEach.call(document.querySelectorAll('p'), function (paragraph) {
       var value = normalize(paragraph.innerText);
@@ -491,6 +537,8 @@
         installInitials();
         alignInvitationLabels();
         alignDetailsContent();
+        recolorCelebrationPanel();
+        applyBrideAudioNotes();
         installInvitationDeadline(invitation);
         preserveInvitationLinks();
         installRealCouplePhotos();
@@ -531,6 +579,8 @@
     installClosingSections();
     sanitizeDetailsLinks();
     alignDetailsContent();
+    recolorCelebrationPanel();
+    applyBrideAudioNotes();
     installInitials();
     alignInvitationLabels();
     installInvitationDeadline(invitation);
@@ -544,6 +594,8 @@
       setTimeout(installClosingSections, delay);
       setTimeout(sanitizeDetailsLinks, delay);
       setTimeout(alignDetailsContent, delay);
+      setTimeout(recolorCelebrationPanel, delay);
+      setTimeout(applyBrideAudioNotes, delay);
       setTimeout(installInitials, delay);
       setTimeout(alignInvitationLabels, delay);
       setTimeout(function () { installInvitationDeadline(invitation); }, delay);
