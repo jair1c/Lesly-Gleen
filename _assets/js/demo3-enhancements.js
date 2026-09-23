@@ -88,12 +88,53 @@
   }
 
   function wireVinylControls(audio) {
+    var disc = document.getElementById('LBfmmjqdw01g8QSC');
+    var toggle = document.querySelector('.demo3-vinyl-toggle');
+    if (disc && !toggle) {
+      toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'demo3-vinyl-toggle';
+      toggle.dataset.demo3MusicBound = 'true';
+      disc.parentElement.appendChild(toggle);
+    }
+
+    if (!window.demo3MusicToggleBound) {
+      window.demo3MusicToggleBound = true;
+      document.addEventListener('click', function (event) {
+        var button = event.target && event.target.closest && event.target.closest('.demo3-vinyl-toggle');
+        if (!button) return;
+        event.preventDefault();
+        event.stopPropagation();
+        if (audio.paused) audio.play().catch(function () {});
+        else audio.pause();
+      }, true);
+    }
+
+    function syncToggle() {
+      var current = document.querySelector('.demo3-vinyl-toggle');
+      if (!current) return;
+      current.textContent = audio.paused ? '\u25b6' : '\u2161';
+      current.setAttribute('aria-label', audio.paused ? 'Reproducir música' : 'Pausar música');
+      current.setAttribute('title', audio.paused ? 'Reproducir música' : 'Pausar música');
+    }
+
+    if (!audio.dataset.demo3ToggleSyncBound) {
+      audio.dataset.demo3ToggleSyncBound = 'true';
+      audio.addEventListener('play', syncToggle);
+      audio.addEventListener('pause', syncToggle);
+    }
+    syncToggle();
+
     var vinyl = document.querySelector('video');
     if (vinyl && !vinyl.dataset.demo3MusicBound) {
       vinyl.dataset.demo3MusicBound = 'true';
       vinyl.loop = true;
-      vinyl.addEventListener('play', function () { audio.play().catch(function () {}); });
-      vinyl.addEventListener('pause', function () { audio.pause(); });
+      /* El clip decorativo puede pausarse solo; el toque del usuario gobierna
+         la canción de forma independiente y estable. */
+      vinyl.addEventListener('click', function () {
+        if (audio.paused) audio.play().catch(function () {});
+        else audio.pause();
+      }, true);
     }
     Array.prototype.forEach.call(document.querySelectorAll('button'), function (button) {
       var label = normalize(button.getAttribute('aria-label') || button.innerText).toLowerCase();
@@ -263,12 +304,26 @@
   function alignInvitationLabels() {
     if (!/\/save-the-date\/?$/.test(location.pathname)) return;
     var tag = document.getElementById('LB3ZbHR6Rs28Q8qW');
-    if (!tag) return;
-    var lines = tag.querySelectorAll('p');
-    if (lines.length < 3) return;
-    ['Lesly', '&', 'Gleen'].forEach(function (text, index) {
-      if (lines[index].textContent !== text) lines[index].textContent = text;
-    });
+    if (tag) {
+      var lines = tag.querySelectorAll('p');
+      if (lines.length >= 3) {
+        ['Lesly', '&', 'Gleen'].forEach(function (text, index) {
+          if (lines[index].textContent !== text) lines[index].textContent = text;
+        });
+      }
+    }
+
+    var history = document.querySelector('#LBc0yrsJdc0DfDnt a');
+    if (history && history.textContent !== 'Historia de amor') {
+      history.textContent = 'Historia de amor';
+    }
+
+    /* La curva original pegaba visualmente "TOCA" con "Y". */
+    var curvedLetters = document.querySelectorAll('#LBxTB0nlgxyZSDXC .jfNO9A');
+    if (curvedLetters.length >= 5) {
+      curvedLetters[3].style.left = 'calc(50% - 27px)';
+      curvedLetters[4].style.left = 'calc(50% - 5px)';
+    }
   }
 
   function guardInvitationComposition() {
@@ -282,6 +337,7 @@
       setTimeout(function () {
         pending = false;
         installCalendar();
+        installInitials();
         alignInvitationLabels();
       }, 40);
     });

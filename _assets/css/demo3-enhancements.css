@@ -167,6 +167,31 @@
   text-transform: uppercase;
 }
 
+.demo3-vinyl-toggle {
+  position: absolute;
+  z-index: 8;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  place-items: center;
+  transform: translate(418.02px, 609.75px);
+  color: #f5f1e7;
+  background: rgba(88, 80, 61, .84);
+  border: 3px solid rgba(245, 241, 231, .9);
+  border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(45, 38, 24, .22);
+  font: 700 24px/1 Arial, sans-serif;
+  cursor: pointer;
+}
+
+.demo3-vinyl-toggle:focus-visible {
+  outline: 3px solid rgba(245, 241, 231, .95);
+  outline-offset: 4px;
+}
+
 /* Canva encoge horizontalmente los textos traducidos y desplaza sus centros.
    Restauramos las cajas originales y adaptamos solo la tipografía española. */
 #LB1hP4s28pzr0ryw,
@@ -179,11 +204,25 @@
   text-align: center !important;
 }
 
+#LBc0yrsJdc0DfDnt {
+  width: 260px !important;
+  transform: translate(351.45px, 1635.66px) rotate(-4.87682deg) !important;
+}
+
+#LBc0yrsJdc0DfDnt > .aF9o6Q {
+  width: 320.85px !important;
+}
+
 #LBc0yrsJdc0DfDnt p {
-  --H97cbQ: 36px !important;
-  font-size: 36px !important;
-  line-height: 32px !important;
+  --H97cbQ: 39px !important;
+  font-size: 39px !important;
+  line-height: 42px !important;
   text-align: center !important;
+}
+
+#LBc0yrsJdc0DfDnt a {
+  display: block;
+  white-space: nowrap !important;
 }
 
 #LBPcZG8RKbLP5b2s p {
@@ -406,6 +445,22 @@
 }
 
 @media (max-width: 480px) {
+  .demo3-calendar-foot {
+    top: 70.5%;
+    left: 11%;
+    width: 78%;
+    line-height: 1.35;
+  }
+
+  /* Abre espacio bajo los datos del calendario sin mover el resto del collage. */
+  #LB7pBg4J0Xgq7Rj0 {
+    transform: translate(407.707px, 1088.42px) rotate(-30.3991deg) !important;
+  }
+
+  #LB1GtJMJTQ7qVY2m {
+    transform: translate(387.613px, 1186.54px) !important;
+  }
+
   .demo3-social { padding-inline: 20px; }
   .demo3-countdown { padding-inline: 16px; }
   .demo3-countdown-grid { gap: 14px; }
