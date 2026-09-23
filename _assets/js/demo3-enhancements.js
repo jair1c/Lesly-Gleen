@@ -105,15 +105,25 @@
       var currentToggle = document.querySelector('.demo3-vinyl-toggle');
       if (!currentDisc || !currentToggle) return;
       var rect = currentDisc.getBoundingClientRect();
-      currentToggle.style.left = (window.scrollX + rect.left + (rect.width - currentToggle.offsetWidth) / 2) + 'px';
-      currentToggle.style.top = (window.scrollY + rect.top + (rect.height - currentToggle.offsetHeight) / 2) + 'px';
+      currentToggle.style.left = (rect.left + (rect.width - currentToggle.offsetWidth) / 2) + 'px';
+      currentToggle.style.top = (rect.top + (rect.height - currentToggle.offsetHeight) / 2) + 'px';
     }
 
     positionToggle();
     if (!window.demo3VinylPositionBound) {
       window.demo3VinylPositionBound = true;
-      window.addEventListener('resize', function () { window.requestAnimationFrame(positionToggle); });
-      window.addEventListener('orientationchange', function () { window.requestAnimationFrame(positionToggle); });
+      var positionFrame = 0;
+      function scheduleTogglePosition() {
+        if (positionFrame) return;
+        positionFrame = window.requestAnimationFrame(function () {
+          positionFrame = 0;
+          positionToggle();
+        });
+      }
+      window.addEventListener('scroll', scheduleTogglePosition, true);
+      window.addEventListener('resize', scheduleTogglePosition);
+      window.addEventListener('orientationchange', scheduleTogglePosition);
+      document.addEventListener('touchmove', scheduleTogglePosition, { passive: true });
     }
 
     if (!window.demo3MusicToggleBound) {

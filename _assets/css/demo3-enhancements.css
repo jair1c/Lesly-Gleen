@@ -168,7 +168,7 @@
 }
 
 .demo3-vinyl-toggle {
-  position: absolute;
+  position: fixed;
   z-index: 2147483000;
   top: 0;
   left: 0;
@@ -204,13 +204,9 @@
   text-align: center !important;
 }
 
-#LBc0yrsJdc0DfDnt {
-  width: 260px !important;
-  transform: translate(351.45px, 1635.66px) rotate(-4.87682deg) !important;
-}
-
 #LBc0yrsJdc0DfDnt > .aF9o6Q {
   width: 320.85px !important;
+  margin-left: -36px;
 }
 
 #LBc0yrsJdc0DfDnt p {
@@ -445,11 +441,24 @@
 }
 
 @media (max-width: 480px) {
+  #LBc0yrsJdc0DfDnt > .aF9o6Q {
+    margin-left: -15px;
+  }
+
   .demo3-calendar-foot {
     top: 63.5%;
     left: 11%;
     width: 78%;
     line-height: 1.35;
+  }
+
+  /* Conserva el conjunto completo, pero despeja la hora y la dirección. */
+  #LB7pBg4J0Xgq7Rj0 {
+    translate: 0 10px !important;
+  }
+
+  #LB1GtJMJTQ7qVY2m {
+    translate: 0 10px !important;
   }
 
   .demo3-social { padding-inline: 20px; }
