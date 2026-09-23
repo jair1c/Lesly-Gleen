@@ -95,7 +95,25 @@
       toggle.type = 'button';
       toggle.className = 'demo3-vinyl-toggle';
       toggle.dataset.demo3MusicBound = 'true';
-      disc.parentElement.appendChild(toggle);
+      document.body.appendChild(toggle);
+    } else if (toggle && toggle.parentElement !== document.body) {
+      document.body.appendChild(toggle);
+    }
+
+    function positionToggle() {
+      var currentDisc = document.getElementById('LBfmmjqdw01g8QSC');
+      var currentToggle = document.querySelector('.demo3-vinyl-toggle');
+      if (!currentDisc || !currentToggle) return;
+      var rect = currentDisc.getBoundingClientRect();
+      currentToggle.style.left = (window.scrollX + rect.left + (rect.width - currentToggle.offsetWidth) / 2) + 'px';
+      currentToggle.style.top = (window.scrollY + rect.top + (rect.height - currentToggle.offsetHeight) / 2) + 'px';
+    }
+
+    positionToggle();
+    if (!window.demo3VinylPositionBound) {
+      window.demo3VinylPositionBound = true;
+      window.addEventListener('resize', function () { window.requestAnimationFrame(positionToggle); });
+      window.addEventListener('orientationchange', function () { window.requestAnimationFrame(positionToggle); });
     }
 
     if (!window.demo3MusicToggleBound) {
@@ -155,6 +173,8 @@
     audio.dataset.state = 'paused';
     audio.src = BASE + '_assets/music/music.mp3';
     audio.loop = true;
+    audio.autoplay = true;
+    audio.setAttribute('autoplay', '');
     audio.preload = 'metadata';
     audio.addEventListener('play', function () { audio.dataset.state = 'playing'; });
     audio.addEventListener('pause', function () { audio.dataset.state = 'paused'; });
@@ -162,6 +182,44 @@
     document.body.appendChild(audio);
     wireVinylControls(audio);
     return { audio: audio };
+  }
+
+  function enableMusicAutoplay(audio) {
+    function markBlocked() {
+      audio.dataset.autoplay = 'blocked';
+    }
+
+    function markPlaying() {
+      audio.dataset.autoplay = 'playing';
+    }
+
+    function tryPlay() {
+      var result = audio.play();
+      if (result && typeof result.then === 'function') {
+        result.then(markPlaying).catch(markBlocked);
+      }
+    }
+
+    /* Se intenta al cargar. En navegadores que bloquean audio sin interacción,
+       el primer toque fuera del control del vinilo lo habilita inmediatamente. */
+    tryPlay();
+    if (!window.demo3AutoplayUnlockBound) {
+      window.demo3AutoplayUnlockBound = true;
+      document.addEventListener('pointerdown', function unlockMusic(event) {
+        if (event.target && event.target.closest && event.target.closest('.demo3-vinyl-toggle')) return;
+        if (!audio.paused) {
+          document.removeEventListener('pointerdown', unlockMusic, true);
+          return;
+        }
+        var result = audio.play();
+        if (result && typeof result.then === 'function') {
+          result.then(function () {
+            markPlaying();
+            document.removeEventListener('pointerdown', unlockMusic, true);
+          }).catch(markBlocked);
+        }
+      }, true);
+    }
   }
 
   function showWelcome(invitation, music) {
@@ -179,6 +237,7 @@
       '<button class="demo3-enter" type="button">Ver invitación</button>' +
       '</article>';
     overlay.querySelector('button').addEventListener('click', function () {
+      music.audio.play().catch(function () {});
       overlay.remove();
     });
     document.body.appendChild(overlay);
@@ -326,7 +385,7 @@
     }
   }
 
-  function guardInvitationComposition() {
+  function guardInvitationComposition(audio) {
     if (window.demo3CompositionObserver || !window.MutationObserver) return;
     var root = document.getElementById('root');
     if (!root) return;
@@ -339,6 +398,7 @@
         installCalendar();
         installInitials();
         alignInvitationLabels();
+        wireVinylControls(audio);
       }, 40);
     });
     window.demo3CompositionObserver.observe(root, { childList: true, subtree: true, characterData: true });
@@ -367,9 +427,10 @@
       return;
     }
     var music = createMusic();
+    enableMusicAutoplay(music.audio);
     if (invitation) showWelcome(invitation, music);
     guardClosingSections();
-    guardInvitationComposition();
+    guardInvitationComposition(music.audio);
     installClosingSections();
     sanitizeDetailsLinks();
     installInitials();

@@ -169,21 +169,21 @@
 
 .demo3-vinyl-toggle {
   position: absolute;
-  z-index: 8;
+  z-index: 2147483000;
   top: 0;
   left: 0;
   display: grid;
-  width: 54px;
-  height: 54px;
+  width: clamp(36px, 4.3vw, 54px);
+  height: clamp(36px, 4.3vw, 54px);
   padding: 0;
   place-items: center;
-  transform: translate(418.02px, 609.75px);
+  transform: none;
   color: #f5f1e7;
   background: rgba(88, 80, 61, .84);
-  border: 3px solid rgba(245, 241, 231, .9);
+  border: clamp(2px, .23vw, 3px) solid rgba(245, 241, 231, .9);
   border-radius: 50%;
   box-shadow: 0 3px 10px rgba(45, 38, 24, .22);
-  font: 700 24px/1 Arial, sans-serif;
+  font: 700 clamp(18px, 1.9vw, 24px)/1 Arial, sans-serif;
   cursor: pointer;
 }
 
@@ -446,19 +446,10 @@
 
 @media (max-width: 480px) {
   .demo3-calendar-foot {
-    top: 70.5%;
+    top: 63.5%;
     left: 11%;
     width: 78%;
     line-height: 1.35;
-  }
-
-  /* Abre espacio bajo los datos del calendario sin mover el resto del collage. */
-  #LB7pBg4J0Xgq7Rj0 {
-    transform: translate(407.707px, 1088.42px) rotate(-30.3991deg) !important;
-  }
-
-  #LB1GtJMJTQ7qVY2m {
-    transform: translate(387.613px, 1186.54px) !important;
   }
 
   .demo3-social { padding-inline: 20px; }
