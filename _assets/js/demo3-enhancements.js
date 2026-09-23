@@ -23,6 +23,31 @@
     }
   }
 
+  async function loadInvitation() {
+    var databaseToken = new URLSearchParams(location.search).get('invite');
+    if (!databaseToken) return decodeInvitation();
+    try {
+      var response = await fetch('/api/invitation?token=' + encodeURIComponent(databaseToken), {
+        headers: { 'Accept': 'application/json' },
+        cache: 'no-store'
+      });
+      var data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'No pudimos abrir esta invitación.');
+      return data.invitation;
+    } catch (error) {
+      console.error('No se pudo cargar la invitación personalizada:', error);
+      showInvitationError(error.message);
+      return null;
+    }
+  }
+
+  function showInvitationError(message) {
+    var overlay = document.createElement('div');
+    overlay.className = 'demo3-expired';
+    overlay.innerHTML = '<div class="demo3-expired-card"><img src="' + BASE + '_assets/branding/lg-monogram.png" alt="LG"><div class="demo3-kicker">Gleen &amp; Lesly</div><h1>No pudimos abrir la invitación</h1><p>' + String(message || 'El enlace no es válido.').replace(/[&<>]/g, function (char) { return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' })[char]; }) + '</p></div>';
+    document.body.appendChild(overlay);
+  }
+
   function isExpired(invitation) {
     var expiry = invitation && invitation.exp ? invitation.exp : DEFAULT_EXPIRY;
     return Date.now() >= new Date(expiry + 'T00:00:00-05:00').getTime();
@@ -240,7 +265,7 @@
     overlay.innerHTML =
       '<article class="demo3-welcome-card">' +
       '<img class="demo3-welcome-logo" src="' + BASE + '_assets/branding/lg-monogram.png" alt="Monograma LG">' +
-      '<div class="demo3-kicker">Lesly &amp; Gleen</div>' +
+      '<div class="demo3-kicker">Gleen &amp; Lesly</div>' +
       '<h1>' + names.replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }) + '</h1>' +
       '<p>Nos encantará celebrar este día contigo.</p>' +
       '<p><strong>Hemos reservado ' + seats + ' ' + (seats === 1 ? 'cupo' : 'cupos') + ' para esta invitación.</strong></p>' +
@@ -260,7 +285,7 @@
     overlay.innerHTML =
       '<article class="demo3-expired-card">' +
       '<img class="demo3-expired-logo" src="' + BASE + '_assets/branding/lg-monogram.png" alt="Monograma LG">' +
-      '<div class="demo3-kicker">Lesly &amp; Gleen</div>' +
+      '<div class="demo3-kicker">Gleen &amp; Lesly</div>' +
       '<h1>Invitación caducada</h1>' +
       '<p>Esta invitación ha caducado. Para cualquier consulta, comunícate directamente con los novios.</p>' +
       '</article>';
@@ -285,7 +310,7 @@
     closing.innerHTML =
       '<section class="demo3-social">' +
         '<div class="demo3-closing-inner">' +
-          '<img class="demo3-social-logo" src="' + BASE + '_assets/branding/lg-monogram.png" alt="Monograma de Lesly y Gleen">' +
+          '<img class="demo3-social-logo" src="' + BASE + '_assets/branding/lg-monogram.png" alt="Monograma de Gleen y Lesly">' +
           '<div class="demo3-kicker">Comparte este recuerdo</div>' +
           '<h2>Etiqueta a los novios</h2>' +
           '<p class="demo3-closing-copy">Durante nuestra boda comparte tus fotografías y videos con nosotros en redes sociales.</p>' +
@@ -301,8 +326,8 @@
             '<div class="demo3-countdown-item"><span class="demo3-countdown-value" data-unit="seconds">0000</span><span class="demo3-countdown-label">Segundos</span></div>' +
           '</div>' +
           '<figure class="demo3-countdown-polaroid">' +
-            '<img src="' + BASE + '_assets/media/f8cd8d3d222799fd4ecec8c56a48535d.png" alt="Lesly y Gleen">' +
-            '<figcaption>Lesly &amp; Gleen</figcaption>' +
+            '<img src="' + BASE + '_assets/media/f8cd8d3d222799fd4ecec8c56a48535d.png" alt="Gleen y Lesly">' +
+            '<figcaption>Gleen &amp; Lesly</figcaption>' +
           '</figure>' +
           '<p class="demo3-date-line">28 de noviembre de 2026 · 3:00 PM<br>Club Campestre Los Cantaritos · Sullana</p>' +
         '</div>' +
@@ -310,7 +335,7 @@
       '<section class="demo3-farewell">' +
         '<img class="demo3-angels" src="' + BASE + '_assets/media/ac55e3d49fc01691837c45349775e860.png" alt="Angelitos decorativos">' +
         '<div class="demo3-kicker">Con cariño</div>' +
-        '<h2>Lesly &amp; Gleen</h2>' +
+        '<h2>Gleen &amp; Lesly</h2>' +
         '<a class="demo3-back" href="' + BASE + '#page-1">Volver</a>' +
       '</section>';
       canvas.appendChild(closing);
@@ -365,8 +390,8 @@
   function installInitials() {
     Array.prototype.forEach.call(document.querySelectorAll('p'), function (paragraph) {
       var value = normalize(paragraph.innerText);
-      if (value === 'R') paragraph.textContent = 'L';
-      if (value === 'C' || value === 'c') paragraph.textContent = 'G';
+      if (value === 'R') paragraph.textContent = 'G';
+      if (value === 'C' || value === 'c') paragraph.textContent = 'L';
     });
   }
 
@@ -376,7 +401,7 @@
     if (tag) {
       var lines = tag.querySelectorAll('p');
       if (lines.length >= 3) {
-        ['Lesly', '&', 'Gleen'].forEach(function (text, index) {
+        ['Gleen', '&', 'Lesly'].forEach(function (text, index) {
           if (lines[index].textContent !== text) lines[index].textContent = text;
         });
       }
@@ -429,10 +454,11 @@
     });
   }
 
-  function start() {
-    var invitation = decodeInvitation();
+  async function start() {
+    var invitation = await loadInvitation();
     window.demo3Invitation = invitation;
-    if (invitation && isExpired(invitation)) {
+    window.dispatchEvent(new CustomEvent('demo3:invitation-ready', { detail: invitation }));
+    if (invitation && (invitation.active === false || invitation.expired || isExpired(invitation))) {
       showExpired();
       return;
     }

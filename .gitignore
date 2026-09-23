@@ -1,5 +1,7 @@
 .vercel/
 node_modules/
+.env.local
+.env.*.local
 *.log
 *.before-reference
 confirmaciones_rsvp.json

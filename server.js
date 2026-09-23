@@ -23,8 +23,27 @@ const mimeTypes = {
 
 const demoDir = __dirname;
 
+// Carga variables locales sin incorporar secretos al repositorio.
+const localEnvPath = path.join(demoDir, '.env.local');
+if (fs.existsSync(localEnvPath)) {
+  fs.readFileSync(localEnvPath, 'utf8').split(/\r?\n/).forEach(line => {
+    const match = line.match(/^([A-Z0-9_]+)=(.*)$/);
+    if (match && process.env[match[1]] === undefined) process.env[match[1]] = match[2].trim();
+  });
+}
+
 const server = http.createServer((req, res) => {
   let decoded = decodeURI(req.url.split('?')[0]);
+
+  if (decoded === '/api/admin' || decoded === '/api/invitation') {
+    const handler = require(decoded === '/api/admin' ? './api/admin' : './api/invitation');
+    Promise.resolve(handler(req, res)).catch(error => {
+      console.error('API local:', error);
+      if (!res.headersSent) res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      if (!res.writableEnded) res.end(JSON.stringify({ error: 'Error interno.' }));
+    });
+    return;
+  }
 
   // Endpoint API para recibir y guardar confirmaciones RSVP
   if (decoded === '/api/rsvp' && req.method === 'POST') {
@@ -104,6 +123,7 @@ const server = http.createServer((req, res) => {
 
   const canonicalBase = '/ivory-photo-booth-wedding-website';
   const canonicalPages = {
+    '/admin': '/admin.html',
     [`${canonicalBase}/`]: '/Home.html',
     [canonicalBase]: '/Home.html',
     [`${canonicalBase}/save-the-date`]: '/Save The Date.html',

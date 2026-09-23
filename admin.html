@@ -4,91 +4,48 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>Generador de invitaciones · Lesly &amp; Gleen</title>
+  <title>Panel de invitados · Gleen &amp; Lesly</title>
   <link rel="stylesheet" href="_assets/css/demo3-enhancements.css">
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; color: #5b5232; background: #e7e6df; font-family: "Demo3 Text", Georgia, serif; }
-    .admin-shell { width: min(100% - 28px, 620px); margin: 28px auto; padding: 30px clamp(20px, 6vw, 44px); background: #faf8f3; border: 1px solid rgba(91,82,50,.24); box-shadow: 0 14px 40px rgba(50,43,29,.12); }
-    .admin-logo { display:block; width:100px; height:100px; margin:0 auto 14px; border-radius:50%; object-fit:cover; }
-    h1 { margin:0; text-align:center; font:italic 400 clamp(36px,9vw,52px)/1 "Demo3 Serif",Georgia,serif; }
-    .lead { max-width:45ch; margin:12px auto 28px; text-align:center; line-height:1.55; }
-    label { display:block; margin:16px 0 6px; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
-    input { width:100%; padding:12px 13px; color:#433c28; background:#f5f1e9; border:1px solid #cfc7b8; border-radius:2px; font:400 15px/1.2 "Demo3 Text",Arial,sans-serif; }
-    input:focus { outline:2px solid rgba(91,82,50,.25); border-color:#5b5232; }
-    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    button { width:100%; margin-top:22px; padding:13px 16px; color:#f8f5ee; background:#5b5232; border:0; cursor:pointer; font:700 11px/1 "Demo3 Text",Arial,sans-serif; letter-spacing:.15em; text-transform:uppercase; }
-    .result { display:none; margin-top:26px; padding-top:22px; border-top:1px solid rgba(91,82,50,.25); }
-    .result.is-visible { display:block; }
-    .result textarea { width:100%; min-height:112px; padding:12px; resize:vertical; border:1px solid #cfc7b8; background:#fff; font:12px/1.45 Consolas,monospace; }
-    .secondary { margin-top:10px; color:#5b5232; background:transparent; border:1px solid #5b5232; }
-    .note { margin-top:24px; padding:13px 14px; background:#efebe3; font-size:12px; line-height:1.5; }
-    @media(max-width:500px){.grid{grid-template-columns:1fr}.admin-shell{margin:14px auto;padding-top:24px}}
+    :root{--ink:#5b5232;--dark:#3f3925;--paper:#f8f5ee;--paper2:#efebe3;--line:#cfc7b8;--ok:#647454;--no:#9a5d55;--shadow:0 18px 45px rgba(50,43,29,.13)}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);background:#e7e6df;font-family:"Demo3 Text",Georgia,serif}button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}.shell{width:min(1180px,100% - 24px);margin:18px auto 42px}.panel{background:rgba(250,248,243,.97);border:1px solid rgba(91,82,50,.22);box-shadow:var(--shadow)}
+    .login{width:min(520px,100% - 24px);margin:clamp(28px,10vh,100px) auto;padding:34px clamp(22px,6vw,50px)}.logo{display:block;width:92px;height:92px;margin:0 auto 12px;border-radius:50%;object-fit:cover}.kicker{text-align:center;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}h1,h2,h3,p{margin-top:0}h1{margin-bottom:10px;text-align:center;font:italic 400 clamp(38px,8vw,56px)/1 "Demo3 Serif",Georgia,serif}.lead{max-width:52ch;margin:0 auto 26px;text-align:center;line-height:1.55}
+    .field{margin-top:15px}label{display:block;margin-bottom:6px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}input{width:100%;padding:12px 13px;color:var(--dark);background:#fffdf8;border:1px solid var(--line);border-radius:2px}input:focus{outline:2px solid rgba(91,82,50,.18);border-color:var(--ink)}.btn{min-height:42px;padding:12px 16px;color:#fffaf0;background:var(--ink);border:1px solid var(--ink);border-radius:2px;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.btn:hover{filter:brightness(.94)}.btn.secondary{color:var(--ink);background:transparent}.btn.danger{color:var(--no);background:transparent;border-color:rgba(154,93,85,.55)}.btn.small{min-height:34px;padding:9px 11px;font-size:9px}.login .btn{width:100%;margin-top:22px}.notice{min-height:20px;margin-top:12px;font-size:12px;line-height:1.45;text-align:center}.notice.error{color:#8a3d35}
+    .topbar{display:flex;align-items:center;gap:16px;padding:16px 20px}.topbar .logo{width:56px;height:56px;margin:0}.brand{flex:1}.brand strong{display:block;font:italic 400 27px/1 "Demo3 Serif",Georgia,serif}.brand span{font-size:9px;letter-spacing:.17em;text-transform:uppercase}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}.stat{padding:17px;background:var(--paper);border:1px solid rgba(91,82,50,.18)}.stat strong{display:block;font:400 31px/1 "Demo3 Serif",Georgia,serif}.stat span{font-size:9px;letter-spacing:.12em;text-transform:uppercase}
+    .workspace{display:grid;grid-template-columns:minmax(285px,360px) 1fr;gap:14px;align-items:start}.creator{padding:24px;position:sticky;top:12px}.creator h2,.list-head h2{margin-bottom:6px;font:italic 400 31px/1.1 "Demo3 Serif",Georgia,serif}.creator .hint{margin-bottom:20px;font-size:12px;line-height:1.5}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:20px}.list-panel{padding:22px;min-width:0}.list-head{display:flex;align-items:end;gap:12px;margin-bottom:16px}.list-head>div:first-child{flex:1}.list-head p{margin:0;font-size:12px}.search{width:min(280px,45%)}.invites{display:grid;gap:10px}.empty{padding:35px 20px;text-align:center;background:var(--paper2);border:1px dashed var(--line)}
+    .invite{padding:17px;background:#fffdf8;border:1px solid rgba(91,82,50,.2)}.invite.is-inactive{opacity:.65}.invite-top{display:flex;align-items:flex-start;gap:12px}.invite-title{flex:1;min-width:0}.invite h3{margin:0 0 5px;font:400 22px/1.1 "Demo3 Serif",Georgia,serif;overflow-wrap:anywhere}.meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11px}.badge{flex:0 0 auto;padding:6px 8px;border-radius:999px;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:#ddd8cc}.badge.attending{color:white;background:var(--ok)}.badge.declined{color:white;background:var(--no)}.rsvp{margin-top:13px;padding:12px;background:var(--paper2);font-size:12px;line-height:1.45}.rsvp strong{color:var(--dark)}.rsvp ul{margin:5px 0 0;padding-left:18px}.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.actions .btn{width:auto}.toast{position:fixed;z-index:20;right:16px;bottom:16px;max-width:min(390px,calc(100% - 32px));padding:13px 16px;color:#fff;background:var(--dark);box-shadow:var(--shadow);font-size:12px;line-height:1.4;transform:translateY(130%);opacity:0;transition:.25s ease}.toast.show{transform:translateY(0);opacity:1}.toast.error{background:#873f38}
+    @media(max-width:850px){.workspace{grid-template-columns:1fr}.creator{position:static}.stats{grid-template-columns:1fr 1fr}}@media(max-width:560px){.shell{width:min(100% - 14px,1180px);margin-top:7px}.topbar{padding:12px;gap:8px}.topbar .logo{width:48px;height:48px}.topbar .btn{padding:9px}.brand strong{font-size:23px}.stats{gap:7px}.stat{padding:13px}.stat strong{font-size:27px}.creator,.list-panel{padding:18px 14px}.grid2{grid-template-columns:1fr}.list-head{display:block}.search{width:100%;margin-top:12px}.invite{padding:14px}.invite-top{display:block}.badge{display:inline-block;margin-bottom:9px}.actions{display:grid;grid-template-columns:1fr 1fr}.actions .btn{width:100%}}
   </style>
 </head>
 <body>
-  <main class="admin-shell">
-    <img class="admin-logo" src="_assets/branding/lg-monogram.png" alt="Monograma LG">
-    <div class="demo3-kicker" style="text-align:center">Panel privado</div>
-    <h1>Crear invitación</h1>
-    <p class="lead">Genera un enlace personalizado con los nombres y la cantidad exacta de cupos reservados.</p>
-    <form id="inviteForm">
-      <label for="names">Nombre del invitado o familia</label>
-      <input id="names" name="names" placeholder="Ej.: Familia Ramírez" required>
-      <div class="grid">
-        <div>
-          <label for="seats">Cupos reservados</label>
-          <input id="seats" name="seats" type="number" min="1" max="20" value="2" required>
-        </div>
-        <div>
-          <label for="expiry">Válido antes de</label>
-          <input id="expiry" name="expiry" type="date" value="2026-10-23" required>
-        </div>
-      </div>
-      <button type="submit">Generar enlace personalizado</button>
-    </form>
-    <section class="result" id="result">
-      <label for="generated">Enlace listo para enviar</label>
-      <textarea id="generated" readonly></textarea>
-      <button class="secondary" type="button" id="copy">Copiar enlace</button>
-      <button class="secondary" type="button" id="preview">Abrir vista previa</button>
+  <section class="panel login" id="loginView">
+    <img class="logo" src="_assets/branding/lg-monogram.png" alt="Monograma LG"><div class="kicker">Panel privado</div><h1>Invitados</h1>
+    <p class="lead">Inicia sesión para crear invitaciones y revisar las confirmaciones de Gleen y Lesly.</p>
+    <form id="loginForm"><div class="field"><label for="loginEmail">Correo</label><input id="loginEmail" type="email" autocomplete="username" required></div><div class="field"><label for="loginPassword">Contraseña</label><input id="loginPassword" type="password" autocomplete="current-password" required></div><button class="btn" type="submit">Ingresar al panel</button><div class="notice" id="loginNotice" role="status"></div></form>
+  </section>
+  <main class="shell hidden" id="appView">
+    <header class="panel topbar"><img class="logo" src="_assets/branding/lg-monogram.png" alt="Monograma LG"><div class="brand"><strong>Gleen &amp; Lesly</strong><span id="sessionEmail">Panel de invitados</span></div><button class="btn secondary small" id="refreshButton" type="button">Actualizar</button><button class="btn small" id="logoutButton" type="button">Salir</button></header>
+    <section class="stats" aria-label="Resumen de confirmaciones"><div class="stat"><strong id="statTotal">0</strong><span>Invitaciones</span></div><div class="stat"><strong id="statAttending">0</strong><span>Confirmadas</span></div><div class="stat"><strong id="statPending">0</strong><span>Pendientes</span></div><div class="stat"><strong id="statGuests">0</strong><span>Personas</span></div></section>
+    <section class="workspace">
+      <aside class="panel creator"><div class="kicker" style="text-align:left">Invitación personalizada</div><h2 id="formTitle">Crear invitación</h2><p class="hint">El enlace guardará nombre, cupos y vencimiento en la base de datos.</p>
+        <form id="inviteForm"><input id="editingId" type="hidden"><div class="field"><label for="names">Nombre del invitado o familia</label><input id="names" placeholder="Ej.: Familia Ramírez" maxlength="180" required></div><div class="grid2"><div class="field"><label for="seats">Cupos reservados</label><input id="seats" type="number" min="1" max="20" value="2" required></div><div class="field"><label for="expiry">Válido antes de</label><input id="expiry" type="date" value="2026-10-23" required></div></div><div class="form-actions"><button class="btn" id="saveButton" type="submit">Crear y generar enlace</button><button class="btn secondary hidden" id="cancelEdit" type="button">Cancelar</button></div></form>
+      </aside>
+      <section class="panel list-panel"><header class="list-head"><div><h2>Control de asistencia</h2><p>WhatsApp se mantiene como aviso; esta lista conserva el registro oficial.</p></div><input class="search" id="searchInput" type="search" placeholder="Buscar invitado…" aria-label="Buscar invitado"></header><div class="invites" id="inviteList"></div></section>
     </section>
-    <p class="note"><strong>Importante:</strong> esta página no aparece en el menú. Al ser un sitio estático, el enlace codifica los datos para personalizar la experiencia, pero no funciona como contraseña ni almacena una base de invitados.</p>
   </main>
+  <div class="toast" id="toast" role="status"></div>
   <script>
-    const form = document.getElementById('inviteForm');
-    const result = document.getElementById('result');
-    const generated = document.getElementById('generated');
-    function encodePayload(payload) {
-      const bytes = new TextEncoder().encode(JSON.stringify(payload));
-      let binary = '';
-      bytes.forEach(byte => { binary += String.fromCharCode(byte); });
-      return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    }
-    function invitationBase() {
-      const localBase = '/ivory-photo-booth-wedding-website/';
-      return new URL(localBase, location.origin).href;
-    }
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      const payload = {
-        names: document.getElementById('names').value.trim(),
-        seats: Number(document.getElementById('seats').value),
-        exp: document.getElementById('expiry').value
-      };
-      generated.value = invitationBase() + '?i=' + encodePayload(payload);
-      result.classList.add('is-visible');
-      generated.focus();
-      generated.select();
-    });
-    document.getElementById('copy').addEventListener('click', async () => {
-      await navigator.clipboard.writeText(generated.value);
-      document.getElementById('copy').textContent = 'Enlace copiado';
-      setTimeout(() => { document.getElementById('copy').textContent = 'Copiar enlace'; }, 1800);
-    });
-    document.getElementById('preview').addEventListener('click', () => {
-      if (generated.value) window.open(generated.value, '_blank', 'noopener');
-    });
+    const API='/api/admin',SESSION_KEY='lg_admin_session';const state={token:sessionStorage.getItem(SESSION_KEY)||'',email:'',invitations:[]};const $=id=>document.getElementById(id);
+    function showToast(message,error=false){const toast=$('toast');toast.textContent=message;toast.className='toast show'+(error?' error':'');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>toast.className='toast',3200)}
+    async function api(options={}){const response=await fetch(API,{...options,headers:{'Content-Type':'application/json',...(state.token?{Authorization:`Bearer ${state.token}`} :{}),...(options.headers||{})}});const data=await response.json().catch(()=>({}));if(!response.ok){if(response.status===401&&options.authenticated!==false)logout(false);throw new Error(data.error||'No se pudo completar la operación.')}return data}
+    function setView(login){$('loginView').classList.toggle('hidden',!login);$('appView').classList.toggle('hidden',login)}function logout(notify=true){state.token='';state.email='';sessionStorage.removeItem(SESSION_KEY);setView(true);if(notify)showToast('Sesión cerrada.')}
+    function invitationUrl(token){return new URL('/ivory-photo-booth-wedding-website/?invite='+encodeURIComponent(token),location.origin).href}function statusInfo(invite){if(!invite.active)return['Desactivada','pending'];if(invite.status==='attending')return['Asistirá','attending'];if(invite.status==='declined')return['No asistirá','declined'];return['Pendiente','pending']}function esc(value){return String(value==null?'':value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[char])}
+    function render(){const query=$('searchInput').value.trim().toLowerCase(),filtered=state.invitations.filter(i=>i.names.toLowerCase().includes(query)),attending=state.invitations.filter(i=>i.status==='attending').length,pending=state.invitations.filter(i=>i.status==='pending').length,guests=state.invitations.reduce((n,i)=>n+(i.rsvp&&i.rsvp.attendance?Number(i.rsvp.attendee_count||0):0),0);$('statTotal').textContent=state.invitations.length;$('statAttending').textContent=attending;$('statPending').textContent=pending;$('statGuests').textContent=guests;if(!filtered.length){$('inviteList').innerHTML=`<div class="empty">${query?'No encontramos invitados con ese nombre.':'Aún no has creado invitaciones.'}</div>`;return}$('inviteList').innerHTML=filtered.map(invite=>{const[status,statusClass]=statusInfo(invite),r=invite.rsvp,names=r&&Array.isArray(r.attendee_names)?r.attendee_names:[];return `<article class="invite ${invite.active?'':'is-inactive'}"><div class="invite-top"><span class="badge ${statusClass}">${status}</span><div class="invite-title"><h3>${esc(invite.names)}</h3><div class="meta"><span>${invite.seats} ${invite.seats===1?'cupo':'cupos'}</span><span>Vence: ${esc(invite.exp)}</span></div></div></div>${r?`<div class="rsvp"><strong>${r.attendance?`${r.attendee_count} persona${r.attendee_count===1?'':'s'} confirmada${r.attendee_count===1?'':'s'}`:'Indicó que no podrá asistir'}</strong>${names.length?`<ul>${names.map(name=>`<li>${esc(name)}</li>`).join('')}</ul>`:''}${r.message?`<p style="margin:8px 0 0">“${esc(r.message)}”</p>`:''}</div>`:''}<div class="actions"><button class="btn secondary small" data-action="copy" data-id="${invite.id}">Copiar enlace</button><button class="btn secondary small" data-action="open" data-id="${invite.id}">Abrir</button><button class="btn secondary small" data-action="edit" data-id="${invite.id}">Editar</button><button class="btn secondary small" data-action="toggle" data-id="${invite.id}">${invite.active?'Desactivar':'Activar'}</button><button class="btn danger small" data-action="delete" data-id="${invite.id}">Eliminar</button></div></article>`}).join('')}
+    async function load(){const data=await api({method:'GET'});state.invitations=data.invitations||[];render()}function resetForm(){$('inviteForm').reset();$('seats').value=2;$('expiry').value='2026-10-23';$('editingId').value='';$('formTitle').textContent='Crear invitación';$('saveButton').textContent='Crear y generar enlace';$('cancelEdit').classList.add('hidden')}
+    $('loginForm').addEventListener('submit',async event=>{event.preventDefault();const notice=$('loginNotice');notice.className='notice';notice.textContent='Validando…';try{const data=await api({authenticated:false,method:'POST',body:JSON.stringify({action:'login',email:$('loginEmail').value,password:$('loginPassword').value})});state.token=data.accessToken;state.email=data.email;sessionStorage.setItem(SESSION_KEY,state.token);$('sessionEmail').textContent=data.email;setView(false);notice.textContent='';await load()}catch(error){notice.className='notice error';notice.textContent=error.message}})
+    $('inviteForm').addEventListener('submit',async event=>{event.preventDefault();const id=$('editingId').value,payload={names:$('names').value.trim(),seats:Number($('seats').value),exp:$('expiry').value};try{const data=await api({method:id?'PATCH':'POST',body:JSON.stringify(id?{...payload,id}:payload)});await load();resetForm();if(!id){await navigator.clipboard.writeText(invitationUrl(data.invitation.token));showToast('Invitación creada y enlace copiado.')}else showToast('Invitación actualizada.')}catch(error){showToast(error.message,true)}})
+    $('inviteList').addEventListener('click',async event=>{const button=event.target.closest('[data-action]');if(!button)return;const invite=state.invitations.find(item=>item.id===button.dataset.id);if(!invite)return;const action=button.dataset.action;try{if(action==='copy'){await navigator.clipboard.writeText(invitationUrl(invite.token));showToast('Enlace copiado.')}if(action==='open')window.open(invitationUrl(invite.token),'_blank','noopener');if(action==='edit'){$('editingId').value=invite.id;$('names').value=invite.names;$('seats').value=invite.seats;$('expiry').value=invite.exp;$('formTitle').textContent='Editar invitación';$('saveButton').textContent='Guardar cambios';$('cancelEdit').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}if(action==='toggle'){await api({method:'PATCH',body:JSON.stringify({id:invite.id,active:!invite.active})});await load();showToast(invite.active?'Invitación desactivada.':'Invitación activada.')}if(action==='delete'&&confirm(`¿Eliminar definitivamente la invitación de ${invite.names}?`)){await api({method:'DELETE',body:JSON.stringify({id:invite.id})});await load();showToast('Invitación eliminada.')}}catch(error){showToast(error.message,true)}})
+    $('cancelEdit').addEventListener('click',resetForm);$('searchInput').addEventListener('input',render);$('refreshButton').addEventListener('click',()=>load().then(()=>showToast('Datos actualizados.')).catch(e=>showToast(e.message,true)));$('logoutButton').addEventListener('click',()=>logout());if(state.token){setView(false);load().catch(error=>{logout(false);$('loginNotice').className='notice error';$('loginNotice').textContent=error.message})}else setView(true);
   </script>
 </body>
 </html>

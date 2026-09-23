@@ -24,9 +24,9 @@ const assetFolders = [
 ];
 
 const translations = new Map([
-  ['Rachel & Carter', 'Lesly & Gleen'],
-  ['Rachel & Carter\n', 'Lesly & Gleen\n'],
-  ['RACHEL & CARTER', 'LESLY & GLEEN'],
+  ['Rachel & Carter', 'Gleen & Lesly'],
+  ['Rachel & Carter\n', 'Gleen & Lesly\n'],
+  ['RACHEL & CARTER', 'GLEEN & LESLY'],
   ['You Are Invited!', '¡Estás invitado!'],
   ['we’re getting married!\n', '¡nos casamos!\n'],
   ['Tap to begin\n', 'Toca para empezar\n'],
@@ -121,7 +121,7 @@ const translations = new Map([
   ['RSVP kindly requested by\n', 'Confirmar asistencia antes del\n'],
   ['March 18, 2027\n', '22 de octubre de 2026\n'],
   ['If you have any questions about the day or your RSVP,\n', 'Si tienes alguna pregunta sobre el día o tu confirmación,\n'],
-  ['please feel free to reach out to Elizabeth & George at (646) 000-0000.\n', 'no dudes en comunicarte directamente con Lesly y Gleen.\n'],
+  ['please feel free to reach out to Elizabeth & George at (646) 000-0000.\n', 'no dudes en comunicarte directamente con Gleen y Lesly.\n'],
 ]);
 
 function compactRsvpModel(html) {
