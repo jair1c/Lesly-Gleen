@@ -515,6 +515,10 @@
   background-color: #b79592 !important;
 }
 
+.demo3-remove-arrival-references {
+  display: none !important;
+}
+
 .demo3-map-action a {
   display: inline-block;
   min-width: 180px;
@@ -531,27 +535,32 @@
 }
 
 .demo3-gift-note {
-  width: 100% !important;
-  max-width: 34ch !important;
+  width: 84% !important;
+  max-width: 30ch !important;
   margin-inline: auto !important;
+  --H97cbQ: 18px !important;
+  font-size: 18px !important;
+  line-height: 1.45 !important;
+  overflow-wrap: anywhere !important;
   text-align: center !important;
+  white-space: normal !important;
 }
 
-.demo3-rsvp-monogram img {
+.demo3-rsvp-bottom-monogram {
+  position: absolute;
+  z-index: 50;
+  width: clamp(82px, 11vw, 120px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.demo3-rsvp-bottom-monogram img {
   display: block;
-  width: clamp(90px, 13vw, 150px);
-  height: clamp(90px, 13vw, 150px);
+  width: 100%;
+  height: auto;
   margin: 0 auto;
-  border-radius: 50%;
-  object-fit: cover;
-  filter: brightness(1.08);
-  scale: 1.35 1;
-}
-
-.demo3-rsvp-date {
-  font-size: clamp(17px, 2vw, 28px) !important;
-  letter-spacing: .04em !important;
-  text-transform: uppercase;
+  object-fit: contain;
+  filter: brightness(0) invert(94%) sepia(12%) saturate(275%) hue-rotate(347deg) brightness(105%) contrast(96%);
 }
 
 .demo3-rsvp-repeated-venue {

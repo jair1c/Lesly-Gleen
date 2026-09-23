@@ -461,6 +461,14 @@
     if (/\/details\/?$/.test(path)) {
       Array.prototype.forEach.call(document.querySelectorAll('p'), function (paragraph) {
         var value = normalize(paragraph.innerText);
+        if (value === 'Referencias' || value === 'Referencias de llegada') {
+          var referencesPage = paragraph.closest('section.rGeu6w');
+          var pageText = normalize(referencesPage && referencesPage.innerText).toUpperCase();
+          if (referencesPage && pageText.indexOf('FRENTE AL CLUB CAMPESTRE') !== -1 && pageText.indexOf('INGRESO POR COLA DEL ALACRÁN') !== -1) {
+            referencesPage.classList.add('demo3-remove-arrival-references');
+            referencesPage.setAttribute('aria-hidden', 'true');
+          }
+        }
         if (/^Recomendamos coordinar el transporte con anticipación para asegurar/i.test(value)) {
           paragraph.classList.add('demo3-map-action');
           paragraph.innerHTML = '<a href="https://www.google.com/maps/search/?api=1&amp;query=Club+Campestre+Los+Cantaritos+Cola+del+Alacran+Sullana" target="_blank" rel="noopener">Ver ubicación en el mapa</a>';
@@ -473,20 +481,29 @@
     }
 
     if (/\/(?:page-5|rsvp)\/?$/.test(path) || location.hash === '#page-5') {
+      var rsvpDate = null;
       Array.prototype.forEach.call(document.querySelectorAll('p, h1, h2, h3'), function (node) {
         var value = normalize(node.innerText).toUpperCase();
-        if (value === '¡NOS ENCANTARÍA CELEBRAR CONTIGO!') {
-          node.classList.add('demo3-rsvp-monogram');
-          node.innerHTML = '<img src="' + BASE + '_assets/branding/lg-monogram.png" alt="Monograma de Gleen y Lesly">';
-        }
         if (value === '28 NOV, 2026') {
-          node.textContent = '28 de noviembre de 2026';
-          node.classList.add('demo3-rsvp-date');
+          rsvpDate = node;
         }
         if (value === 'CLUB CAMPESTRE “LOS CANTARITOS”' || value === 'CLUB CAMPESTRE "LOS CANTARITOS"') {
           node.classList.add('demo3-rsvp-repeated-venue');
         }
       });
+
+      if (rsvpDate) {
+        var monogram = document.querySelector('.demo3-rsvp-bottom-monogram');
+        if (!monogram) {
+          monogram = document.createElement('div');
+          monogram.className = 'demo3-rsvp-bottom-monogram';
+          monogram.innerHTML = '<img src="' + BASE + '_assets/branding/lg-monogram-transparent.png" alt="Monograma GL de Gleen y Lesly">';
+          document.body.appendChild(monogram);
+        }
+        var dateBox = rsvpDate.getBoundingClientRect();
+        monogram.style.left = (dateBox.left + dateBox.width / 2) + 'px';
+        monogram.style.top = (window.scrollY + dateBox.bottom + 14) + 'px';
+      }
     }
   }
 
@@ -581,6 +598,7 @@
     alignDetailsContent();
     recolorCelebrationPanel();
     applyBrideAudioNotes();
+    window.addEventListener('resize', applyBrideAudioNotes, { passive: true });
     installInitials();
     alignInvitationLabels();
     installInvitationDeadline(invitation);
