@@ -386,6 +386,15 @@
     });
   }
 
+  function alignDetailsContent() {
+    if (!/\/details\/?$/i.test(location.pathname)) return;
+    var longTitles = ['FRENTE AL CLUB CAMPESTRE', 'INGRESO POR COLA DEL ALACRÁN'];
+    Array.prototype.forEach.call(document.querySelectorAll('p'), function (paragraph) {
+      var value = normalize(paragraph.innerText).toUpperCase();
+      paragraph.classList.toggle('demo3-details-place-title', longTitles.indexOf(value) !== -1);
+    });
+  }
+
   function installInitials() {
     Array.prototype.forEach.call(document.querySelectorAll('p'), function (paragraph) {
       var value = normalize(paragraph.innerText);
@@ -432,6 +441,7 @@
         installCalendar();
         installInitials();
         alignInvitationLabels();
+        alignDetailsContent();
         installInvitationDeadline(invitation);
         wireVinylControls(audio);
       }, 40);
@@ -469,6 +479,7 @@
     guardInvitationComposition(music.audio, invitation);
     installClosingSections();
     sanitizeDetailsLinks();
+    alignDetailsContent();
     installInitials();
     alignInvitationLabels();
     installInvitationDeadline(invitation);
@@ -479,6 +490,7 @@
       setTimeout(function () { wireVinylControls(music.audio); }, delay);
       setTimeout(installClosingSections, delay);
       setTimeout(sanitizeDetailsLinks, delay);
+      setTimeout(alignDetailsContent, delay);
       setTimeout(installInitials, delay);
       setTimeout(alignInvitationLabels, delay);
       setTimeout(function () { installInvitationDeadline(invitation); }, delay);

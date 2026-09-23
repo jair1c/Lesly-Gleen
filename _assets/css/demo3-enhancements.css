@@ -202,12 +202,12 @@
   border-top: .28em solid transparent;
   border-bottom: .28em solid transparent;
   border-left: .43em solid currentColor;
-  font-size: 42px;
+  font-size: 34px;
 }
 
 .demo3-vinyl-toggle[data-state="playing"]::before {
-  width: 34%;
-  height: 46%;
+  width: 27%;
+  height: 38%;
   margin-left: 0;
   border: 0;
   background: linear-gradient(to right, currentColor 0 31%, transparent 31% 69%, currentColor 69% 100%);
@@ -467,6 +467,16 @@
 }
 
 @media (max-width: 480px) {
+  .demo3-details-place-title {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 22px !important;
+    line-height: 30px !important;
+    letter-spacing: .1em !important;
+    text-align: center !important;
+    scale: 1 1 !important;
+  }
+
   .demo3-calendar-host {
     translate: 0 -10px !important;
   }
