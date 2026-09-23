@@ -476,7 +476,7 @@
   }
 
   .demo3-calendar-foot {
-    top: 63.5%;
+    top: 75%;
     left: 11%;
     width: 78%;
     line-height: 1.35;
@@ -484,11 +484,11 @@
 
   /* Conserva el conjunto completo, pero despeja la hora y la dirección. */
   #LB7pBg4J0Xgq7Rj0 {
-    translate: 0 10px !important;
+    translate: 0 32px !important;
   }
 
   #LB1GtJMJTQ7qVY2m {
-    translate: 0 10px !important;
+    translate: 0 32px !important;
   }
 
   .demo3-social { padding-inline: 20px; }
