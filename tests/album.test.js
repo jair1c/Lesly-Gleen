@@ -52,6 +52,20 @@ test('every Canva entry page cache-busts the shared enhancement script', () => {
   }
 });
 
+test('browser icons use the branded GL monogram at their declared sizes', () => {
+  const icons = [
+    ['0e0be3f439c80cb354719e8ea9791e11.png', 32],
+    ['3705a34a97665b009ca3a3077ab2a561.png', 192],
+    ['8196c648de2744b24fed5142c7d616f6.png', 180]
+  ];
+  for (const [file, size] of icons) {
+    const png = fs.readFileSync(path.join(root, '_assets/images', file));
+    assert.equal(png.toString('ascii', 1, 4), 'PNG', file);
+    assert.equal(png.readUInt32BE(16), size, `${file} width`);
+    assert.equal(png.readUInt32BE(20), size, `${file} height`);
+  }
+});
+
 test('local and Vercel routes expose the clean album URL', () => {
   const server = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
   const vercel = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8'));
