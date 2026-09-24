@@ -34,6 +34,24 @@ test('direct album visits hide invitation return controls', () => {
   assert.match(css, /data-album-entry="direct"/);
 });
 
+test('every Canva entry page cache-busts the shared enhancement script', () => {
+  const pages = [
+    'Home.html',
+    'index.html',
+    'Save The Date.html',
+    'save-the-date.html',
+    'Details.html',
+    'Photobooth.html',
+    'Our Love Story.html',
+    'our-love-story.html',
+    'You Are Invited!.html'
+  ];
+  for (const page of pages) {
+    const html = fs.readFileSync(path.join(root, page), 'utf8');
+    assert.match(html, /demo3-enhancements\.js\?v=20260924e/, page);
+  }
+});
+
 test('local and Vercel routes expose the clean album URL', () => {
   const server = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
   const vercel = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8'));
