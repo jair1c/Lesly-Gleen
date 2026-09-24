@@ -6,7 +6,31 @@
   <title>Confirmación RSVP</title>
   <link rel="stylesheet" href="_assets/css/demo3-enhancements.css">
   <style>
-    :root{--ink:#5b5232;--paper:#f4f0e8;--line:#b9ad98;--ok:#667455;--error:#934b43}*{box-sizing:border-box}body{margin:0;padding:15px;color:var(--ink);background:transparent;font-family:"Demo3 Text",Georgia,serif}.card{padding:21px 22px;background:rgba(248,245,238,.98);border:1px solid rgba(91,82,50,.25);box-shadow:0 9px 24px rgba(50,43,29,.09)}.eyebrow{text-align:center;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}.title{margin:4px 0 7px;text-align:center;font:italic 400 36px/1 "Demo3 Serif",Georgia,serif}.subtitle{margin:0 auto 16px;max-width:40ch;text-align:center;font-size:12px;line-height:1.4}.summary{margin:0 0 14px;padding:10px 12px;text-align:center;background:#eae5da;border:1px solid rgba(91,82,50,.14);font-size:12px;line-height:1.45}.summary strong{display:block;font-size:15px}.field{margin-top:11px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;margin-bottom:5px;font-size:8px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}input,select,textarea{width:100%;padding:10px 11px;color:#433c28;background:#fffdf9;border:1px solid var(--line);border-radius:0;font:13px/1.25 "Demo3 Text",Georgia,serif}input[readonly]{color:#5b5232;background:#eee9df}textarea{min-height:61px;resize:vertical}.attendees{display:grid;grid-template-columns:1fr 1fr;gap:8px}.attendees .field{margin-top:8px}.submit{width:100%;min-height:43px;margin-top:15px;padding:11px 14px;color:#fff;background:var(--ink);border:1px solid var(--ink);font:700 9px/1 "Demo3 Text",Arial,sans-serif;letter-spacing:.15em;text-transform:uppercase;cursor:pointer}.submit:disabled{opacity:.55;cursor:wait}.alert{display:none;margin-top:10px;padding:9px;text-align:center;font-size:11px;line-height:1.4}.alert.success{display:block;color:#fff;background:var(--ok)}.alert.error{display:block;color:#fff;background:var(--error)}.saved{margin-top:8px;text-align:center;font-size:10px;font-style:italic}.hidden{display:none!important}@media(max-width:430px){body{padding:9px}.card{padding:17px 14px}.row,.attendees{grid-template-columns:1fr}.title{font-size:32px}}
+    :root{--ink:#5b5232;--paper:#f4f0e8;--line:#b9ad98;--ok:#667455;--error:#934b43}
+    *{box-sizing:border-box}
+    body{margin:0;padding:12px;color:var(--ink);background:transparent;font-family:"Demo3 Text",Georgia,serif}
+    .card{padding:28px 26px 30px;background:rgba(248,245,238,.98);border:1px solid rgba(91,82,50,.25);box-shadow:0 9px 24px rgba(50,43,29,.09)}
+    .eyebrow{text-align:center;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+    .title{margin:8px 0 12px;text-align:center;font:italic 400 43px/1.05 "Demo3 Serif",Georgia,serif}
+    .subtitle{margin:0 auto 22px;max-width:38ch;text-align:center;font-size:15px;line-height:1.55}
+    .summary{margin:0 0 18px;padding:14px 16px;text-align:center;background:#eae5da;border:1px solid rgba(91,82,50,.14);font-size:14px;line-height:1.5}
+    .summary strong{display:block;font-size:18px}
+    .field{margin-top:15px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    label{display:block;margin-bottom:7px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    input,select,textarea{width:100%;min-height:50px;padding:14px;color:#433c28;background:#fffdf9;border:1px solid var(--line);border-radius:0;font:16px/1.35 "Demo3 Text",Georgia,serif}
+    input[readonly]{color:#5b5232;background:#eee9df}
+    textarea{min-height:88px;resize:vertical}
+    .attendees{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .attendees .field{margin-top:12px}
+    .submit{width:100%;min-height:56px;margin-top:20px;padding:15px 18px;color:#fff;background:var(--ink);border:1px solid var(--ink);font:700 11px/1.3 "Demo3 Text",Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+    .submit:disabled{opacity:.55;cursor:wait}
+    .alert{display:none;margin-top:14px;padding:12px;text-align:center;font-size:14px;line-height:1.45}
+    .alert.success{display:block;color:#fff;background:var(--ok)}
+    .alert.error{display:block;color:#fff;background:var(--error)}
+    .saved{margin-top:11px;text-align:center;font-size:13px;font-style:italic}
+    .hidden{display:none!important}
+    @media(max-width:430px){body{padding:8px}.card{padding:23px 18px 26px}.row,.attendees{grid-template-columns:1fr}.title{font-size:38px}}
   </style>
 </head>
 <body>

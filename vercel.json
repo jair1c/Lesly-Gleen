@@ -7,16 +7,20 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/index", "destination": "/", "permanent": false },
-    { "source": "/Home", "destination": "/", "permanent": false }
+    { "source": "/Home", "destination": "/", "permanent": false },
+    { "source": "/page-5", "destination": "/#page-5", "permanent": false },
+    { "source": "/rsvp", "destination": "/#page-5", "permanent": false },
+    { "source": "/ivory-photo-booth-wedding-website", "destination": "/", "permanent": true },
+    { "source": "/ivory-photo-booth-wedding-website/save-the-date", "destination": "/save-the-date", "permanent": true },
+    { "source": "/ivory-photo-booth-wedding-website/details", "destination": "/details", "permanent": true },
+    { "source": "/ivory-photo-booth-wedding-website/our-love-story", "destination": "/our-love-story", "permanent": true },
+    { "source": "/ivory-photo-booth-wedding-website/photobooth", "destination": "/photobooth", "permanent": true },
+    { "source": "/ivory-photo-booth-wedding-website/page-5", "destination": "/page-5", "permanent": true },
+    { "source": "/ivory-photo-booth-wedding-website/admin", "destination": "/admin", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/ivory-photo-booth-wedding-website", "destination": "/" },
-    { "source": "/ivory-photo-booth-wedding-website/save-the-date", "destination": "/save-the-date" },
-    { "source": "/ivory-photo-booth-wedding-website/details", "destination": "/Details" },
-    { "source": "/ivory-photo-booth-wedding-website/our-love-story", "destination": "/our-love-story" },
-    { "source": "/ivory-photo-booth-wedding-website/photobooth", "destination": "/Photobooth" },
-    { "source": "/ivory-photo-booth-wedding-website/page-5", "destination": "/" },
-    { "source": "/ivory-photo-booth-wedding-website/admin", "destination": "/admin" },
+    { "source": "/details", "destination": "/Details" },
+    { "source": "/photobooth", "destination": "/Photobooth" },
     { "source": "/ivory-photo-booth-wedding-website/_website-element-widget", "destination": "/_website-element-widget" },
     { "source": "/ivory-photo-booth-wedding-website/_assets/:path*", "destination": "/_assets/:path*" }
   ],

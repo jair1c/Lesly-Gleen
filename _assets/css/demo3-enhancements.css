@@ -546,12 +546,23 @@
   white-space: normal !important;
 }
 
+.demo3-rsvp-hero {
+  position: relative !important;
+}
+
 .demo3-rsvp-bottom-monogram {
   position: absolute;
   z-index: 50;
   width: clamp(82px, 11vw, 120px);
   transform: translateX(-50%);
   pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .demo3-rsvp-heading {
+    position: relative !important;
+    left: -32px !important;
+  }
 }
 
 .demo3-rsvp-bottom-monogram img {

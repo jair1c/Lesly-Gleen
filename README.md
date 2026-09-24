@@ -8,7 +8,7 @@ Invitación estática, móvil y personalizada para la boda de Gleen y Lesly, el 
 node server.js
 ```
 
-Abre `http://localhost:3000/ivory-photo-booth-wedding-website/`.
+Abre `http://localhost:3000/`.
 
 El panel privado está en `http://localhost:3000/admin`. Los nuevos enlaces guardan el invitado, los cupos, la fecha de caducidad y la confirmación en Supabase. Los enlaces dejan de ser válidos al comenzar el 23 de octubre de 2026 (hora de Perú).
 
@@ -32,6 +32,6 @@ La clave secreta solo se usa dentro de las funciones `/api/admin` y `/api/invita
 1. Sube esta carpeta a un repositorio de GitHub.
 2. En Vercel selecciona **Add New > Project** e importa ese repositorio.
 3. Deja **Framework Preset** en `Other`. No hace falta configurar comandos: `vercel.json` fija el directorio de salida en `.` y desactiva el build.
-4. Despliega. La portada abre tanto desde la raíz del dominio como desde `/ivory-photo-booth-wedding-website`; las demás pantallas conservan sus rutas limpias.
+4. Despliega. La portada y todas las pantallas usan rutas limpias; los enlaces antiguos con `/ivory-photo-booth-wedding-website` redirigen automáticamente a las nuevas rutas.
 
 Las fuentes, el monograma y la música están almacenados localmente. El formulario guarda primero la confirmación en Supabase y luego abre WhatsApp. Los enlaces antiguos con `?i=` continúan abriendo la invitación, pero no registran respuestas en el panel; las invitaciones nuevas usan `?invite=`.

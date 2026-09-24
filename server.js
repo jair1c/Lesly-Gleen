@@ -99,12 +99,6 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  if (decoded === '/' || decoded === '') {
-    res.writeHead(302, { 'Location': '/ivory-photo-booth-wedding-website/' });
-    res.end();
-    return;
-  }
-
   // Si tiene barra al final de un archivo .html (ej. /Home.html/), redirigir
   if (decoded.match(/\.html\/+$/i)) {
     res.writeHead(301, { 'Location': decoded.replace(/\/+$/, '') });
@@ -124,29 +118,34 @@ const server = http.createServer((req, res) => {
   const canonicalBase = '/ivory-photo-booth-wedding-website';
   const canonicalPages = {
     '/admin': '/admin.html',
-    [`${canonicalBase}/`]: '/Home.html',
-    [canonicalBase]: '/Home.html',
-    [`${canonicalBase}/save-the-date`]: '/Save The Date.html',
-    [`${canonicalBase}/details`]: '/Details.html',
-    [`${canonicalBase}/our-love-story`]: '/Our Love Story.html',
-    [`${canonicalBase}/photobooth`]: '/Photobooth.html',
-    [`${canonicalBase}/page-5`]: '/index.html',
+    '/': '/Home.html',
+    '/save-the-date': '/Save The Date.html',
+    '/details': '/Details.html',
+    '/our-love-story': '/Our Love Story.html',
+    '/photobooth': '/Photobooth.html',
   };
+  if (decoded === '/page-5' || decoded === '/rsvp') {
+    res.writeHead(302, { 'Location': '/#page-5' });
+    res.end();
+    return;
+  }
   const legacyRedirects = {
-    '/Home.html': `${canonicalBase}/`,
-    '/You Are Invited!.html': `${canonicalBase}/#page-1`,
-    '/Save The Date.html': `${canonicalBase}/save-the-date`,
-    '/Details.html': `${canonicalBase}/details`,
-    '/Our Love Story.html': `${canonicalBase}/our-love-story`,
-    '/Photobooth.html': `${canonicalBase}/photobooth`,
-    '/RSVP.html': `${canonicalBase}/#page-5`,
-    '/save-the-date': `${canonicalBase}/save-the-date`,
-    '/details': `${canonicalBase}/details`,
-    '/story': `${canonicalBase}/our-love-story`,
-    '/our-love-story': `${canonicalBase}/our-love-story`,
-    '/photobooth': `${canonicalBase}/photobooth`,
-    '/RSVP': `${canonicalBase}/page-5`,
-    '/rsvp': `${canonicalBase}/#page-5`,
+    [`${canonicalBase}/`]: '/',
+    [canonicalBase]: '/',
+    [`${canonicalBase}/save-the-date`]: '/save-the-date',
+    [`${canonicalBase}/details`]: '/details',
+    [`${canonicalBase}/our-love-story`]: '/our-love-story',
+    [`${canonicalBase}/photobooth`]: '/photobooth',
+    [`${canonicalBase}/page-5`]: '/page-5',
+    '/Home.html': '/',
+    '/You Are Invited!.html': '/#page-1',
+    '/Save The Date.html': '/save-the-date',
+    '/Details.html': '/details',
+    '/Our Love Story.html': '/our-love-story',
+    '/Photobooth.html': '/photobooth',
+    '/RSVP.html': '/page-5',
+    '/story': '/our-love-story',
+    '/RSVP': '/page-5',
   };
   if (legacyRedirects[decoded]) {
     res.writeHead(302, { 'Location': legacyRedirects[decoded] });
@@ -237,7 +236,7 @@ process.on('unhandledRejection', (reason) => {
 });
 
 server.listen(PORT, () => {
-  const url = `http://localhost:${PORT}/ivory-photo-booth-wedding-website/`;
+  const url = `http://localhost:${PORT}/`;
   console.log(`\n======================================================`);
   console.log(`  Web de Bodas (demo3) lista y funcionando offline`);
   console.log(`  URL: ${url}`);

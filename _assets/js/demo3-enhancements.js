@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var BASE = '/ivory-photo-booth-wedding-website/';
+  var BASE = '/';
   var WEDDING_AT = new Date('2026-11-28T15:00:00-05:00').getTime();
   var DEFAULT_EXPIRY = '2026-10-23';
 
@@ -27,7 +27,7 @@
     var token = new URLSearchParams(location.search).get('invite') || '';
     try {
       if (token) sessionStorage.setItem('demo3InviteToken', token);
-      else if (/\/ivory-photo-booth-wedding-website\/?$/i.test(location.pathname) && !location.hash) {
+      else if (/^(?:\/|\/ivory-photo-booth-wedding-website\/?)$/i.test(location.pathname) && !location.hash) {
         sessionStorage.removeItem('demo3InviteToken');
       }
       else token = sessionStorage.getItem('demo3InviteToken') || '';
@@ -60,7 +60,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function (link) {
       try {
         var url = new URL(link.href, location.href);
-        if (url.origin !== location.origin || url.pathname.indexOf('/ivory-photo-booth-wedding-website') !== 0) return;
+        if (url.origin !== location.origin || !/^\/(?:ivory-photo-booth-wedding-website\/)?(?:$|save-the-date|details|our-love-story|photobooth|page-5|rsvp)/i.test(url.pathname)) return;
         if (url.searchParams.get('invite') === token) return;
         url.searchParams.set('invite', token);
         link.href = url.pathname + url.search + url.hash;
@@ -482,8 +482,13 @@
 
     if (/\/(?:page-5|rsvp)\/?$/.test(path) || location.hash === '#page-5') {
       var rsvpDate = null;
+      var rsvpHeading = null;
       Array.prototype.forEach.call(document.querySelectorAll('p, h1, h2, h3'), function (node) {
         var value = normalize(node.innerText).toUpperCase();
+        if (value === '¡NOS ENCANTARÍA CELEBRAR CONTIGO!') {
+          rsvpHeading = node;
+          node.classList.add('demo3-rsvp-heading');
+        }
         if (value === '28 NOV, 2026') {
           rsvpDate = node;
         }
@@ -494,15 +499,68 @@
 
       if (rsvpDate) {
         var monogram = document.querySelector('.demo3-rsvp-bottom-monogram');
+        var rsvpHero = rsvpDate.closest('section') || (rsvpHeading && rsvpHeading.closest('section'));
         if (!monogram) {
           monogram = document.createElement('div');
           monogram.className = 'demo3-rsvp-bottom-monogram';
           monogram.innerHTML = '<img src="' + BASE + '_assets/branding/lg-monogram-transparent.png" alt="Monograma GL de Gleen y Lesly">';
-          document.body.appendChild(monogram);
         }
-        var dateBox = rsvpDate.getBoundingClientRect();
-        monogram.style.left = (dateBox.left + dateBox.width / 2) + 'px';
-        monogram.style.top = (window.scrollY + dateBox.bottom + 14) + 'px';
+        if (rsvpHero) {
+          rsvpHero.classList.add('demo3-rsvp-hero');
+          if (monogram.parentElement !== rsvpHero) rsvpHero.appendChild(monogram);
+          var dateBox = rsvpDate.getBoundingClientRect();
+          var heroBox = rsvpHero.getBoundingClientRect();
+          var scaleX = rsvpHero.offsetWidth ? heroBox.width / rsvpHero.offsetWidth : 1;
+          var scaleY = rsvpHero.offsetHeight ? heroBox.height / rsvpHero.offsetHeight : 1;
+          monogram.style.left = ((dateBox.left + dateBox.width / 2 - heroBox.left) / (scaleX || 1)) + 'px';
+          monogram.style.top = ((dateBox.bottom - heroBox.top + 14) / (scaleY || 1)) + 'px';
+        }
+      }
+    }
+  }
+
+  function expandRsvpForm() {
+    if (!/\/(?:page-5|rsvp)\/?$/i.test(location.pathname) && location.hash !== '#page-5') return;
+    var host = document.getElementById('LBVsDyKMr36tlJl5');
+    if (!host || host.dataset.demo3Expanded === 'true') return;
+
+    var originalHeight = parseFloat(host.style.height) || 540;
+    var expandedHeight = 900;
+    var delta = expandedHeight - originalHeight;
+    if (delta <= 0) return;
+
+    var transform = host.style.transform || '';
+    var hostPosition = transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
+    var hostTop = hostPosition ? Number(hostPosition[2]) : host.offsetTop;
+    var page = host.closest('section.rGeu6w') || host.closest('section');
+
+    host.style.height = expandedHeight + 'px';
+    host.dataset.demo3Expanded = 'true';
+    var fitted = host.firstElementChild;
+    if (fitted) fitted.style.height = expandedHeight + 'px';
+    Array.prototype.forEach.call(host.querySelectorAll('div'), function (wrapper) {
+      wrapper.style.height = '100%';
+    });
+    var iframe = host.querySelector('iframe');
+    if (iframe) {
+      iframe.setAttribute('height', String(expandedHeight));
+      iframe.style.height = '100%';
+    }
+
+    if (page) {
+      Array.prototype.forEach.call(page.querySelectorAll('.DF_utQ._0xkaeQ'), function (element) {
+        if (element === host) return;
+        var value = element.style.transform || '';
+        var match = value.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
+        if (!match || Number(match[2]) < hostTop + originalHeight - 1) return;
+        element.style.transform = value.replace(match[0], 'translate(' + match[1] + 'px, ' + (Number(match[2]) + delta) + 'px)');
+      });
+
+      var node = page;
+      while (node && node !== document.body) {
+        var height = parseFloat(node.style.height);
+        if (height) node.style.height = (height + delta) + 'px';
+        node = node.parentElement;
       }
     }
   }
@@ -556,6 +614,7 @@
         alignDetailsContent();
         recolorCelebrationPanel();
         applyBrideAudioNotes();
+        expandRsvpForm();
         installInvitationDeadline(invitation);
         preserveInvitationLinks();
         installRealCouplePhotos();
@@ -598,6 +657,7 @@
     alignDetailsContent();
     recolorCelebrationPanel();
     applyBrideAudioNotes();
+    expandRsvpForm();
     window.addEventListener('resize', applyBrideAudioNotes, { passive: true });
     installInitials();
     alignInvitationLabels();
@@ -614,6 +674,7 @@
       setTimeout(alignDetailsContent, delay);
       setTimeout(recolorCelebrationPanel, delay);
       setTimeout(applyBrideAudioNotes, delay);
+      setTimeout(expandRsvpForm, delay);
       setTimeout(installInitials, delay);
       setTimeout(alignInvitationLabels, delay);
       setTimeout(function () { installInvitationDeadline(invitation); }, delay);
