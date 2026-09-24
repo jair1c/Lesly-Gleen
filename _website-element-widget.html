@@ -8,6 +8,7 @@
   <style>
     :root{--ink:#5b5232;--paper:#f4f0e8;--line:#b9ad98;--ok:#667455;--error:#934b43}
     *{box-sizing:border-box}
+    html,body{overflow:hidden}
     body{margin:0;padding:12px;color:var(--ink);background:transparent;font-family:"Demo3 Text",Georgia,serif}
     .card{padding:28px 26px 30px;background:rgba(248,245,238,.98);border:1px solid rgba(91,82,50,.25);box-shadow:0 9px 24px rgba(50,43,29,.09)}
     .eyebrow{text-align:center;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
@@ -52,7 +53,8 @@
     </form>
   </main>
   <script>
-    const form=document.getElementById('rsvpForm'),attendance=document.getElementById('attendance'),people=document.getElementById('people'),peopleWrap=document.getElementById('peopleWrap'),fields=document.getElementById('attendeeFields'),nameInput=document.getElementById('invitationName'),messageInput=document.getElementById('message'),submitButton=document.getElementById('submitButton'),alertBox=document.getElementById('alertBox');let invitation=null;
+    const form=document.getElementById('rsvpForm'),attendance=document.getElementById('attendance'),people=document.getElementById('people'),peopleWrap=document.getElementById('peopleWrap'),fields=document.getElementById('attendeeFields'),nameInput=document.getElementById('invitationName'),messageInput=document.getElementById('message'),submitButton=document.getElementById('submitButton'),alertBox=document.getElementById('alertBox'),card=document.querySelector('.card');let invitation=null,resizeFrame=0;
+    function reportHeight(){cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{const height=Math.ceil(card.getBoundingClientRect().height+24);window.parent.postMessage({type:'demo3:rsvp-height',height},location.origin)})}
     function alertMessage(text,error=false){alertBox.textContent=text;alertBox.className='alert '+(error?'error':'success')}
     function parentToken(){try{const direct=new URLSearchParams(window.parent.location.search).get('invite')||window.parent.demo3InviteToken||sessionStorage.getItem('demo3InviteToken')||'';if(direct)sessionStorage.setItem('demo3InviteToken',direct);return direct}catch(_){try{return sessionStorage.getItem('demo3InviteToken')||''}catch(__){return''}}}
     function getParentInvitation(){try{return window.parent&&window.parent.demo3Invitation||null}catch(_){return null}}
@@ -63,7 +65,8 @@
     async function waitForInvitation(){const token=parentToken();if(token){try{const response=await fetch('/api/invitation?token='+encodeURIComponent(token),{headers:{Accept:'application/json'},cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'No pudimos abrir esta invitación.');applyInvitation(data.invitation);return}catch(error){alertMessage(error.message,true);return}}for(let attempt=0;attempt<50;attempt++){const value=getParentInvitation();if(value){applyInvitation(value);return}await new Promise(resolve=>setTimeout(resolve,200))}}
     attendance.addEventListener('change',toggleAttendance);people.addEventListener('change',()=>renderAttendees(Array.from(document.querySelectorAll('.attendee-name')).map(input=>input.value)));
     form.addEventListener('submit',async event=>{event.preventDefault();const attending=attendance.value==='si',names=Array.from(document.querySelectorAll('.attendee-name')).map(input=>input.value.trim());if(!nameInput.value.trim())return alertMessage('Completa el nombre de la invitación.',true);if(!attendance.value)return alertMessage('Selecciona si asistirás.',true);if(attending&&names.some(name=>!name))return alertMessage('Completa el nombre de todas las personas que asistirán.',true);const token=parentToken();submitButton.disabled=true;submitButton.textContent='Guardando confirmación…';try{if(!token){throw new Error('Este es un enlace anterior. Solicita el nuevo enlace personalizado para registrar la confirmación en el panel.')}const response=await fetch('/api/invitation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,attendance:attending,attendeeCount:attending?Number(people.value):0,attendeeNames:attending?names:[],message:messageInput.value.trim()})});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'No pudimos guardar la confirmación.');alertMessage(data.whatsappUrl?'Confirmación guardada. Abriendo WhatsApp…':'Confirmación guardada. Falta configurar el número de WhatsApp.',!data.whatsappUrl);document.getElementById('savedNote').classList.remove('hidden');if(data.whatsappUrl)setTimeout(()=>{if(window.top&&window.top!==window.self)window.top.location.href=data.whatsappUrl;else window.location.href=data.whatsappUrl},650)}catch(error){alertMessage(error.message,true)}finally{submitButton.disabled=false;submitButton.textContent='Guardar y confirmar por WhatsApp'}});
-    waitForInvitation();
+    if(window.ResizeObserver)new ResizeObserver(reportHeight).observe(card);else new MutationObserver(reportHeight).observe(card,{childList:true,subtree:true,attributes:true});
+    window.addEventListener('load',reportHeight);reportHeight();waitForInvitation();
   </script>
 </body>
 </html>

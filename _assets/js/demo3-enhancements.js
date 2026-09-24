@@ -519,49 +519,76 @@
     }
   }
 
-  function expandRsvpForm() {
+  function expandRsvpForm(contentHeight) {
     if (!/\/(?:page-5|rsvp)\/?$/i.test(location.pathname) && location.hash !== '#page-5') return;
     var host = document.getElementById('LBVsDyKMr36tlJl5');
-    if (!host || host.dataset.demo3Expanded === 'true') return;
+    if (!host) return;
 
-    var originalHeight = parseFloat(host.style.height) || 540;
-    var expandedHeight = 900;
-    var delta = expandedHeight - originalHeight;
-    if (delta <= 0) return;
+    if (!window.demo3RsvpLayouts) window.demo3RsvpLayouts = new WeakMap();
+    var layout = window.demo3RsvpLayouts.get(host);
+    if (!layout) {
+      var originalHeight = parseFloat(host.style.height) || 540;
+      var originalTransform = host.style.transform || '';
+      var originalPosition = originalTransform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
+      var originalTop = originalPosition ? Number(originalPosition[2]) : host.offsetTop;
+      var originalPage = host.closest('section.rGeu6w') || host.closest('section');
+      var downstream = [];
+      if (originalPage) {
+        Array.prototype.forEach.call(originalPage.querySelectorAll('.DF_utQ._0xkaeQ'), function (element) {
+          if (element === host) return;
+          var value = element.style.transform || '';
+          var match = value.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
+          if (!match || Number(match[2]) < originalTop + originalHeight - 1) return;
+          downstream.push({ element: element, transform: value, x: match[1], y: Number(match[2]), match: match[0] });
+        });
+      }
+      var ancestors = [];
+      var ancestor = originalPage;
+      while (ancestor && ancestor !== document.body) {
+        var baseHeight = parseFloat(ancestor.style.height);
+        if (baseHeight) ancestors.push({ element: ancestor, height: baseHeight });
+        ancestor = ancestor.parentElement;
+      }
+      layout = { baseHeight: originalHeight, downstream: downstream, ancestors: ancestors };
+      window.demo3RsvpLayouts.set(host, layout);
+    }
 
-    var transform = host.style.transform || '';
-    var hostPosition = transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
-    var hostTop = hostPosition ? Number(hostPosition[2]) : host.offsetTop;
-    var page = host.closest('section.rGeu6w') || host.closest('section');
+    var measuredHeight = Math.ceil(Number(contentHeight) || 0);
+    var expandedHeight = Math.max(900, measuredHeight ? measuredHeight + 120 : 0);
+    var delta = expandedHeight - layout.baseHeight;
 
-    host.style.height = expandedHeight + 'px';
-    host.dataset.demo3Expanded = 'true';
+    host.style.setProperty('height', expandedHeight + 'px', 'important');
+    host.style.overflow = 'visible';
+    host.dataset.demo3ExpandedHeight = String(expandedHeight);
     var fitted = host.firstElementChild;
-    if (fitted) fitted.style.height = expandedHeight + 'px';
+    if (fitted) fitted.style.setProperty('height', expandedHeight + 'px', 'important');
     Array.prototype.forEach.call(host.querySelectorAll('div'), function (wrapper) {
-      wrapper.style.height = '100%';
+      wrapper.style.setProperty('height', '100%', 'important');
     });
     var iframe = host.querySelector('iframe');
     if (iframe) {
       iframe.setAttribute('height', String(expandedHeight));
-      iframe.style.height = '100%';
+      iframe.setAttribute('scrolling', 'no');
+      iframe.style.setProperty('height', '100%', 'important');
+      iframe.style.overflow = 'hidden';
     }
 
-    if (page) {
-      Array.prototype.forEach.call(page.querySelectorAll('.DF_utQ._0xkaeQ'), function (element) {
-        if (element === host) return;
-        var value = element.style.transform || '';
-        var match = value.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
-        if (!match || Number(match[2]) < hostTop + originalHeight - 1) return;
-        element.style.transform = value.replace(match[0], 'translate(' + match[1] + 'px, ' + (Number(match[2]) + delta) + 'px)');
-      });
-
-      var node = page;
-      while (node && node !== document.body) {
-        var height = parseFloat(node.style.height);
-        if (height) node.style.height = (height + delta) + 'px';
-        node = node.parentElement;
+    layout.downstream.forEach(function (item) {
+      if (!item.element.isConnected) return;
+      item.element.style.transform = item.transform.replace(item.match, 'translate(' + item.x + 'px, ' + (item.y + delta) + 'px)');
+    });
+    layout.ancestors.forEach(function (item) {
+      if (item.element.isConnected) {
+        item.element.style.setProperty('height', (item.height + delta) + 'px', 'important');
       }
+    });
+
+    if (!window.demo3RsvpHeightListener) {
+      window.demo3RsvpHeightListener = true;
+      window.addEventListener('message', function (event) {
+        if (event.origin !== location.origin || !event.data || event.data.type !== 'demo3:rsvp-height') return;
+        expandRsvpForm(event.data.height);
+      });
     }
   }
 
