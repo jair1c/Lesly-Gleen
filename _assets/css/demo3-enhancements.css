@@ -571,6 +571,24 @@
   position: relative !important;
 }
 
+/* Reserva el espacio completo antes de que Canva termine su maquetación.
+   El JS puede ampliarlo después si aparecen más acompañantes o avisos. */
+#LBVsDyKMr36tlJl5 {
+  min-height: 900px !important;
+  height: 900px !important;
+  overflow: visible !important;
+}
+
+#LBVsDyKMr36tlJl5 > div,
+#LBVsDyKMr36tlJl5 iframe {
+  min-height: 100% !important;
+  height: 100% !important;
+}
+
+#LBVsDyKMr36tlJl5 iframe {
+  overflow: hidden !important;
+}
+
 .demo3-rsvp-bottom-monogram {
   position: absolute;
   z-index: 50;

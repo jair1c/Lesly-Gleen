@@ -48,6 +48,7 @@ test('every Canva entry page cache-busts the shared enhancement script', () => {
   ];
   for (const page of pages) {
     const html = fs.readFileSync(path.join(root, page), 'utf8');
+    assert.match(html, /demo3-enhancements\.css\?v=20260924f/, page);
     assert.match(html, /demo3-enhancements\.js\?v=20260924e/, page);
   }
 });
