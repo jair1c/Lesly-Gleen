@@ -123,6 +123,7 @@ const server = http.createServer((req, res) => {
     '/details': '/Details.html',
     '/our-love-story': '/Our Love Story.html',
     '/photobooth': '/Photobooth.html',
+    '/album': '/album.html',
   };
   if (decoded === '/page-5' || decoded === '/rsvp') {
     res.writeHead(302, { 'Location': '/#page-5' });
@@ -136,6 +137,7 @@ const server = http.createServer((req, res) => {
     [`${canonicalBase}/details`]: '/details',
     [`${canonicalBase}/our-love-story`]: '/our-love-story',
     [`${canonicalBase}/photobooth`]: '/photobooth',
+    [`${canonicalBase}/album`]: '/album',
     [`${canonicalBase}/page-5`]: '/page-5',
     '/Home.html': '/',
     '/You Are Invited!.html': '/#page-1',
@@ -143,6 +145,8 @@ const server = http.createServer((req, res) => {
     '/Details.html': '/details',
     '/Our Love Story.html': '/our-love-story',
     '/Photobooth.html': '/photobooth',
+    '/album.html': '/album',
+    '/album-preview.html': '/album',
     '/RSVP.html': '/page-5',
     '/story': '/our-love-story',
     '/RSVP': '/page-5',

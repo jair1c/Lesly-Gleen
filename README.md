@@ -10,6 +10,8 @@ node server.js
 
 Abre `http://localhost:3000/`.
 
+El álbum independiente está disponible en `http://localhost:3000/album`. Se abre desde el botón **Ver álbum de fotos** de la sección de hashtags y conserva el parámetro `?invite=` de cada invitación personalizada.
+
 El panel privado está en `http://localhost:3000/admin`. Los nuevos enlaces guardan el invitado, los cupos, la fecha de caducidad y la confirmación en Supabase. Los enlaces dejan de ser válidos al comenzar el 23 de octubre de 2026 (hora de Perú).
 
 ## Base de datos y panel privado

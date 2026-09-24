@@ -390,6 +390,27 @@
   letter-spacing: .14em;
   text-transform: uppercase;
 }
+.demo3-album-button {
+  display: inline-flex;
+  min-height: 42px;
+  margin-top: 7px;
+  padding: 9px 18px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--demo3-ink);
+  color: var(--demo3-paper, #eeece7);
+  background: var(--demo3-ink);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font: 600 9px/1.2 "Demo3 Text", Arial, sans-serif;
+  transition: color .25s ease, background .25s ease;
+}
+.demo3-album-button:hover,
+.demo3-album-button:focus-visible {
+  color: var(--demo3-ink);
+  background: rgba(255,255,255,.45);
+}
 .demo3-countdown-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

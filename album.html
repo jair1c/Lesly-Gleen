@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#eeece7">
+  <meta name="description" content="Álbum de recuerdos de Gleen y Lesly.">
+  <title>Nuestro álbum · Gleen &amp; Lesly</title>
+  <link rel="stylesheet" href="/_assets/css/album.css?v=20260924a">
+  <script defer src="/_assets/js/album.js?v=20260924a"></script>
+</head>
+<body>
+  <header class="album-header">
+    <a class="album-back" id="backTop" href="/save-the-date#recuerdos" aria-label="Volver a la invitación">
+      <span aria-hidden="true">←</span> Invitación
+    </a>
+    <div class="album-brand">
+      <img src="/_assets/branding/lg-monogram-transparent.png" alt="" aria-hidden="true">
+      <span>Gleen &amp; Lesly</span>
+    </div>
+    <span class="album-date">28 · 11 · 2026</span>
+  </header>
+
+  <main>
+    <section class="album-intro" aria-labelledby="albumTitle">
+      <p class="album-kicker">Una colección de instantes</p>
+      <h1 id="albumTitle">Nuestra baraja<br>de recuerdos</h1>
+      <p class="album-lead">Fotografías que guardan miradas, promesas y pequeños capítulos de la vida que elegimos compartir.</p>
+      <span class="album-flourish" aria-hidden="true">G &amp; L</span>
+    </section>
+
+    <section class="album-viewer" aria-label="Álbum fotográfico de Gleen y Lesly">
+      <div class="album-deck" id="albumDeck">
+        <button class="album-arrow album-arrow--prev" id="albumPrev" type="button" aria-label="Fotografía anterior">
+          <span aria-hidden="true">‹</span>
+        </button>
+
+        <article class="album-card" id="albumCard" aria-live="polite">
+          <div class="album-photo-wrap">
+            <img id="albumPhoto" src="/_assets/media/album/photo-01.jpg" alt="Gleen y Lesly caminando de la mano">
+            <button class="album-expand" id="albumExpand" type="button" aria-label="Ampliar fotografía">
+              <span aria-hidden="true">↗</span>
+            </button>
+            <span class="album-sample-label" id="sampleLabel" hidden>Imagen de muestra</span>
+          </div>
+          <div class="album-caption">
+            <p class="album-chapter" id="albumChapter">Capítulo I</p>
+            <h2 id="albumCaption">Caminando hacia lo que viene</h2>
+            <p id="albumNote">El comienzo de una nueva historia</p>
+          </div>
+        </article>
+
+        <button class="album-arrow album-arrow--next" id="albumNext" type="button" aria-label="Fotografía siguiente">
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
+
+      <div class="album-progress" aria-hidden="true">
+        <span id="albumCurrent">01</span>
+        <span class="album-progress-line"><i id="albumProgressBar"></i></span>
+        <span id="albumTotal">07</span>
+      </div>
+
+      <div class="album-index">
+        <p>Selecciona un recuerdo</p>
+        <div class="album-thumbs" id="albumThumbs" role="list" aria-label="Índice de fotografías"></div>
+      </div>
+      <p class="album-hint">Desliza la fotografía o utiliza las miniaturas para recorrer el álbum.</p>
+    </section>
+
+    <section class="album-closing">
+      <img src="/_assets/branding/lg-monogram-transparent.png" alt="Monograma de Gleen y Lesly">
+      <p>Los mejores capítulos todavía están por escribirse.</p>
+      <a class="album-return" id="backBottom" href="/save-the-date#recuerdos">Volver a la invitación</a>
+    </section>
+  </main>
+
+  <div class="album-lightbox" id="albumLightbox" role="dialog" aria-modal="true" aria-label="Fotografía ampliada" aria-hidden="true">
+    <button class="lightbox-close" type="button" aria-label="Cerrar fotografía">×</button>
+    <button class="lightbox-arrow lightbox-arrow--prev" type="button" aria-label="Fotografía anterior">‹</button>
+    <figure>
+      <img id="lightboxPhoto" alt="">
+      <figcaption id="lightboxCaption"></figcaption>
+    </figure>
+    <button class="lightbox-arrow lightbox-arrow--next" type="button" aria-label="Fotografía siguiente">›</button>
+  </div>
+</body>
+</html>

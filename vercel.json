@@ -15,6 +15,8 @@
     { "source": "/ivory-photo-booth-wedding-website/details", "destination": "/details", "permanent": true },
     { "source": "/ivory-photo-booth-wedding-website/our-love-story", "destination": "/our-love-story", "permanent": true },
     { "source": "/ivory-photo-booth-wedding-website/photobooth", "destination": "/photobooth", "permanent": true },
+    { "source": "/ivory-photo-booth-wedding-website/album", "destination": "/album", "permanent": true },
+    { "source": "/album-preview", "destination": "/album", "permanent": true },
     { "source": "/ivory-photo-booth-wedding-website/page-5", "destination": "/page-5", "permanent": true },
     { "source": "/ivory-photo-booth-wedding-website/admin", "destination": "/admin", "permanent": true }
   ],
@@ -27,6 +29,10 @@
   "headers": [
     {
       "source": "/_assets/js/demo3-enhancements.js",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/_assets/css/demo3-enhancements.css",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
     },
     {

@@ -1,6 +1,12 @@
 .vercel/
 node_modules/
 .env.local
+
+# Originales de alta resolución del álbum; la web usa las copias optimizadas.
+_assets/media/IMG_4160.JPEG
+_assets/media/IMG_4164.JPEG
+_assets/media/IMG_4167.JPEG
+_assets/media/album-sample-*.png
 .env.*.local
 *.log
 *.before-reference

@@ -60,7 +60,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function (link) {
       try {
         var url = new URL(link.href, location.href);
-        if (url.origin !== location.origin || !/^\/(?:ivory-photo-booth-wedding-website\/)?(?:$|save-the-date|details|our-love-story|photobooth|page-5|rsvp)/i.test(url.pathname)) return;
+        if (url.origin !== location.origin || !/^\/(?:ivory-photo-booth-wedding-website\/)?(?:$|save-the-date|details|our-love-story|photobooth|album|page-5|rsvp)/i.test(url.pathname)) return;
         if (url.searchParams.get('invite') === token) return;
         url.searchParams.set('invite', token);
         link.href = url.pathname + url.search + url.hash;
@@ -363,7 +363,7 @@
           '<h2>Etiqueta a los novios</h2>' +
           '<p class="demo3-closing-copy">Durante nuestra boda comparte tus fotografías y videos con nosotros en redes sociales.</p>' +
           '<div class="demo3-tags"><span>#GleenyLes</span><span>#GlenslyLand</span></div>' +
-          '<div class="demo3-album-pending"><strong>Álbum de fotos</strong><span>Pronto habilitaremos aquí el enlace para subir tus recuerdos.</span></div>' +
+          '<div class="demo3-album-pending"><strong>Álbum de fotos</strong><span>Recorre nuestra baraja de momentos y fotografías.</span><a class="demo3-album-button" href="' + BASE + 'album">Ver álbum de fotos</a></div>' +
         '</div>' +
       '</section>' +
       '<section class="demo3-countdown">' +
