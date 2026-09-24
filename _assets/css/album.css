@@ -71,6 +71,11 @@ button { color: inherit; }
 
 .album-back span { margin-right: 6px; font-size: 17px; vertical-align: -1px; }
 
+html[data-album-entry="direct"] .album-back,
+html[data-album-entry="direct"] .album-return {
+  display: none;
+}
+
 .album-brand {
   display: flex;
   align-items: center;
@@ -315,7 +320,8 @@ button { color: inherit; }
   place-items: center;
   align-content: center;
   text-align: center;
-  background: var(--album-paper-deep);
+  border-top: 1px solid rgba(91,82,50,.13);
+  background: rgba(238,236,231,.88);
 }
 
 .album-closing img { width: 84px; height: 84px; object-fit: contain; }

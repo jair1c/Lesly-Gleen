@@ -24,6 +24,8 @@
   var lightbox = document.getElementById('albumLightbox');
   var lightboxPhoto = document.getElementById('lightboxPhoto');
   var lightboxCaption = document.getElementById('lightboxCaption');
+  var entryParams = new URLSearchParams(location.search);
+  var cameFromInvitation = entryParams.get('from') === 'invitation' || entryParams.has('invite') || entryParams.has('i');
   var activeIndex = 0;
   var touchStartX = null;
   var lastFocus = null;
@@ -104,9 +106,11 @@
   }
 
   function invitationUrl() {
-    var token = new URLSearchParams(location.search).get('invite');
-    try { if (!token) token = sessionStorage.getItem('demo3InviteToken') || ''; } catch (error) {}
-    return '/save-the-date' + (token ? '?invite=' + encodeURIComponent(token) : '') + '#recuerdos';
+    var token = entryParams.get('invite') || '';
+    var legacyToken = entryParams.get('i') || '';
+    try { if (cameFromInvitation && !token && !legacyToken) token = sessionStorage.getItem('demo3InviteToken') || ''; } catch (error) {}
+    var query = token ? '?invite=' + encodeURIComponent(token) : (legacyToken ? '?i=' + encodeURIComponent(legacyToken) : '');
+    return '/save-the-date' + query + '#recuerdos';
   }
 
   document.getElementById('albumPrev').addEventListener('click', function () { selectPhoto(activeIndex - 1, -1); });

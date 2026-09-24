@@ -6,8 +6,14 @@
   <meta name="theme-color" content="#eeece7">
   <meta name="description" content="Álbum de recuerdos de Gleen y Lesly.">
   <title>Nuestro álbum · Gleen &amp; Lesly</title>
-  <link rel="stylesheet" href="/_assets/css/album.css?v=20260924a">
-  <script defer src="/_assets/js/album.js?v=20260924a"></script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      document.documentElement.dataset.albumEntry = params.get('from') === 'invitation' || params.has('invite') || params.has('i') ? 'invitation' : 'direct';
+    })();
+  </script>
+  <link rel="stylesheet" href="/_assets/css/album.css?v=20260924c">
+  <script defer src="/_assets/js/album.js?v=20260924b"></script>
 </head>
 <body>
   <header class="album-header">

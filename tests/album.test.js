@@ -22,7 +22,16 @@ test('album uses only local styles, scripts, fonts and photographs', () => {
 test('invitation includes the album button and preserves album links', () => {
   const enhancements = fs.readFileSync(path.join(root, '_assets/js/demo3-enhancements.js'), 'utf8');
   assert.match(enhancements, /Ver álbum de fotos/);
+  assert.match(enhancements, /album\?from=invitation/);
   assert.match(enhancements, /photobooth\|album\|page-5/);
+});
+
+test('direct album visits hide invitation return controls', () => {
+  const html = fs.readFileSync(path.join(root, 'album.html'), 'utf8');
+  const css = fs.readFileSync(path.join(root, '_assets/css/album.css'), 'utf8');
+  assert.match(html, /dataset\.albumEntry/);
+  assert.match(html, /params\.get\('from'\) === 'invitation'/);
+  assert.match(css, /data-album-entry="direct"/);
 });
 
 test('local and Vercel routes expose the clean album URL', () => {
