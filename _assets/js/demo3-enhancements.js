@@ -61,7 +61,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function (link) {
       try {
         var url = new URL(link.href, location.href);
-        if (url.origin !== location.origin || !/^\/(?:ivory-photo-booth-wedding-website\/)?(?:$|save-the-date|details|our-love-story|photobooth|album|page-5|rsvp)/i.test(url.pathname)) return;
+        if (url.origin !== location.origin || !/^\/(?:ivory-photo-booth-wedding-website\/)?(?:$|save-the-date|details|our-love-story|photobooth|album|recuerdos|page-5|rsvp)/i.test(url.pathname)) return;
         if (token && url.searchParams.get('invite') !== token) url.searchParams.set('invite', token);
         else if (!token && legacyToken && url.searchParams.get('i') !== legacyToken) url.searchParams.set('i', legacyToken);
         link.href = url.pathname + url.search + url.hash;
@@ -364,7 +364,10 @@
           '<h2>Etiqueta a los novios</h2>' +
           '<p class="demo3-closing-copy">Durante nuestra boda comparte tus fotografías y videos con nosotros en redes sociales.</p>' +
           '<div class="demo3-tags"><span>#GleenyLes</span><span>#GlenslyLand</span></div>' +
-          '<div class="demo3-album-pending"><strong>Álbum de fotos</strong><span>Recorre nuestra baraja de momentos y fotografías.</span><a class="demo3-album-button" href="' + BASE + 'album?from=invitation">Ver álbum de fotos</a></div>' +
+          '<div class="demo3-memory-links">' +
+            '<div class="demo3-album-pending"><strong>Álbum de los novios</strong><span>Recorre nuestra baraja de momentos y fotografías.</span><a class="demo3-album-button" href="' + BASE + 'album?from=invitation">Ver álbum de fotos</a></div>' +
+            '<div class="demo3-album-pending demo3-guest-memories"><strong>Recuerdos de nuestros invitados</strong><span>Comparte las fotos que captures durante la celebración.</span><a class="demo3-album-button" href="' + BASE + 'recuerdos?from=invitation">Ver y subir recuerdos</a></div>' +
+          '</div>' +
         '</div>' +
       '</section>' +
       '<section class="demo3-countdown">' +

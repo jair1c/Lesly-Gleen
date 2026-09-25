@@ -23,7 +23,7 @@ test('invitation includes the album button and preserves album links', () => {
   const enhancements = fs.readFileSync(path.join(root, '_assets/js/demo3-enhancements.js'), 'utf8');
   assert.match(enhancements, /Ver álbum de fotos/);
   assert.match(enhancements, /album\?from=invitation/);
-  assert.match(enhancements, /photobooth\|album\|page-5/);
+  assert.match(enhancements, /photobooth\|album\|recuerdos\|page-5/);
 });
 
 test('direct album visits hide invitation return controls', () => {
@@ -73,4 +73,11 @@ test('local and Vercel routes expose the clean album URL', () => {
   assert.match(server, /'\/album': '\/album\.html'/);
   assert.equal(vercel.cleanUrls, true);
   assert.ok(vercel.redirects.some((rule) => rule.source === '/album-preview' && rule.destination === '/album'));
+});
+
+test('local server exposes the guest memories page and APIs', () => {
+  const server = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
+  assert.match(server, /'\/recuerdos': '\/recuerdos\.html'/);
+  assert.match(server, /'\/api\/guest-photos'/);
+  assert.match(server, /'\/api\/admin-photos'/);
 });

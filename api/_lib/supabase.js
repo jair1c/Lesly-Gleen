@@ -71,6 +71,32 @@ async function supabaseRequest(path, options = {}) {
   return data;
 }
 
+async function storageRequest(path, options = {}) {
+  const url = requiredEnv('SUPABASE_URL');
+  const key = requiredEnv('SUPABASE_SECRET_KEY');
+  const response = await fetch(`${url}/storage/v1/${path}`, {
+    ...options,
+    headers: {
+      ...keyHeaders(key),
+      ...(options.headers || {})
+    }
+  });
+  if (options.raw && response.ok) return response;
+  const text = await response.text();
+  let data = null;
+  if (text) {
+    try { data = JSON.parse(text); } catch (_) { data = text; }
+  }
+  if (!response.ok) {
+    const message = data && (data.message || data.error || data.error_description) || `Supabase Storage respondió ${response.status}.`;
+    const error = new Error(message);
+    error.status = response.status;
+    error.details = data;
+    throw error;
+  }
+  return data;
+}
+
 async function authRequest(path, options = {}) {
   const url = requiredEnv('SUPABASE_URL');
   const key = requiredEnv('SUPABASE_PUBLISHABLE_KEY');
@@ -124,5 +150,6 @@ module.exports = {
   getBody,
   requireAdmin,
   sendJson,
+  storageRequest,
   supabaseRequest
 };

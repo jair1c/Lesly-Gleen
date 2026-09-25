@@ -16,6 +16,7 @@
     { "source": "/ivory-photo-booth-wedding-website/our-love-story", "destination": "/our-love-story", "permanent": true },
     { "source": "/ivory-photo-booth-wedding-website/photobooth", "destination": "/photobooth", "permanent": true },
     { "source": "/ivory-photo-booth-wedding-website/album", "destination": "/album", "permanent": true },
+    { "source": "/ivory-photo-booth-wedding-website/recuerdos", "destination": "/recuerdos", "permanent": true },
     { "source": "/album-preview", "destination": "/album", "permanent": true },
     { "source": "/ivory-photo-booth-wedding-website/page-5", "destination": "/page-5", "permanent": true },
     { "source": "/ivory-photo-booth-wedding-website/admin", "destination": "/admin", "permanent": true }

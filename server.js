@@ -35,8 +35,14 @@ if (fs.existsSync(localEnvPath)) {
 const server = http.createServer((req, res) => {
   let decoded = decodeURI(req.url.split('?')[0]);
 
-  if (decoded === '/api/admin' || decoded === '/api/invitation') {
-    const handler = require(decoded === '/api/admin' ? './api/admin' : './api/invitation');
+  if (decoded === '/api/admin' || decoded === '/api/invitation' || decoded === '/api/guest-photos' || decoded === '/api/admin-photos') {
+    const handlers = {
+      '/api/admin': './api/admin',
+      '/api/invitation': './api/invitation',
+      '/api/guest-photos': './api/guest-photos',
+      '/api/admin-photos': './api/admin-photos'
+    };
+    const handler = require(handlers[decoded]);
     Promise.resolve(handler(req, res)).catch(error => {
       console.error('API local:', error);
       if (!res.headersSent) res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -124,6 +130,7 @@ const server = http.createServer((req, res) => {
     '/our-love-story': '/Our Love Story.html',
     '/photobooth': '/Photobooth.html',
     '/album': '/album.html',
+    '/recuerdos': '/recuerdos.html',
   };
   if (decoded === '/page-5' || decoded === '/rsvp') {
     res.writeHead(302, { 'Location': '/#page-5' });
@@ -138,6 +145,7 @@ const server = http.createServer((req, res) => {
     [`${canonicalBase}/our-love-story`]: '/our-love-story',
     [`${canonicalBase}/photobooth`]: '/photobooth',
     [`${canonicalBase}/album`]: '/album',
+    [`${canonicalBase}/recuerdos`]: '/recuerdos',
     [`${canonicalBase}/page-5`]: '/page-5',
     '/Home.html': '/',
     '/You Are Invited!.html': '/#page-1',
@@ -146,6 +154,7 @@ const server = http.createServer((req, res) => {
     '/Our Love Story.html': '/our-love-story',
     '/Photobooth.html': '/photobooth',
     '/album.html': '/album',
+    '/recuerdos.html': '/recuerdos',
     '/album-preview.html': '/album',
     '/RSVP.html': '/page-5',
     '/story': '/our-love-story',

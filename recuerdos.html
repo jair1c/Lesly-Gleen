@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#d7c9b3">
+  <meta name="description" content="Recuerdos compartidos por los invitados de Gleen y Lesly.">
+  <title>Recuerdos de nuestros invitados · Gleen &amp; Lesly</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/_assets/images/0e0be3f439c80cb354719e8ea9791e11.png">
+  <link rel="stylesheet" href="/_assets/css/recuerdos.css?v=20260925a">
+  <script defer src="/_assets/js/recuerdos.js?v=20260925a"></script>
+</head>
+<body>
+  <header class="guest-header">
+    <a class="guest-back" id="backToInvite" href="/save-the-date#recuerdos" hidden><span aria-hidden="true">←</span> Invitación</a>
+    <a class="guest-brand" href="/album" aria-label="Ver álbum oficial">
+      <img src="/_assets/branding/lg-monogram-transparent.png" alt="">
+      <span>Gleen &amp; Lesly</span>
+    </a>
+    <span class="guest-date">28 · 11 · 2026</span>
+  </header>
+
+  <main>
+    <section class="guest-hero">
+      <p class="eyebrow">Una mirada compartida</p>
+      <h1>Recuerdos de<br>nuestros invitados</h1>
+      <p>Las fotografías espontáneas también cuentan nuestra historia. Comparte las tuyas y ayúdanos a guardar cada instante.</p>
+      <span class="hero-mark" aria-hidden="true">G &amp; L</span>
+    </section>
+
+    <section class="upload-section" aria-labelledby="uploadTitle">
+      <article class="upload-card">
+        <div class="upload-heading">
+          <span class="upload-number">01</span>
+          <div><p class="eyebrow">Tu cámara, nuestro recuerdo</p><h2 id="uploadTitle">Sube tus fotos</h2></div>
+        </div>
+        <p class="upload-copy" id="uploadMessage">Comprobando tu invitación…</p>
+        <div class="upload-rules">
+          <span>JPG, PNG o WebP</span><span>Máximo 6 MB</span><span>Hasta 10 por envío</span>
+        </div>
+        <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+        <button class="primary-button" id="choosePhotos" type="button" disabled>Seleccionar fotografías</button>
+        <div class="preview-area" id="previewArea" hidden>
+          <div class="preview-head"><strong>Revisa antes de enviar</strong><span id="previewCount"></span></div>
+          <div class="preview-grid" id="previewGrid"></div>
+          <button class="primary-button" id="submitPhotos" type="button">Enviar para aprobación</button>
+          <button class="text-button" id="clearPhotos" type="button">Quitar selección</button>
+        </div>
+        <div class="upload-status" id="uploadStatus" role="status" aria-live="polite"></div>
+      </article>
+    </section>
+
+    <section class="gallery-section" aria-labelledby="galleryTitle">
+      <header class="gallery-heading">
+        <span class="upload-number">02</span>
+        <div><p class="eyebrow">Visto por quienes nos quieren</p><h2 id="galleryTitle">La celebración en imágenes</h2></div>
+      </header>
+      <p class="gallery-note">Las nuevas fotografías aparecen aquí después de ser revisadas por los novios.</p>
+      <div class="guest-gallery" id="guestGallery" aria-live="polite">
+        <div class="gallery-empty" id="galleryEmpty"><span>♡</span><strong>Muy pronto comenzará esta colección</strong><p>Los primeros recuerdos aparecerán aquí durante la celebración.</p></div>
+      </div>
+    </section>
+
+    <section class="guest-closing">
+      <img src="/_assets/branding/lg-monogram-transparent.png" alt="Monograma de Gleen y Lesly">
+      <p>Gracias por mirar este día con nosotros.</p>
+      <a href="/album">Ver el álbum de los novios</a>
+    </section>
+  </main>
+
+  <div class="guest-lightbox" id="guestLightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Fotografía ampliada">
+    <button type="button" class="lightbox-close" aria-label="Cerrar">×</button>
+    <figure><img id="lightboxImage" alt=""><figcaption id="lightboxCaption"></figcaption></figure>
+  </div>
+</body>
+</html>
